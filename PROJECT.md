@@ -115,8 +115,36 @@ xadmin
 
 ##### 配置 MySQL 驱动
 
-- `pip install mysqlclient`
+- 安装 mysqlclient 依赖
+  - 将 mysqlclient 写入到 requirements.txt 文件中，项目根目录下执行命令：`pip install -r requirements.txt`
 - 详情参见：[mysqlclient](https://pypi.org/project/mysqlclient/)
+
+##### 在 settings.py 文件中配置 MySQL 数据库
+
+```python
+DATABASES = {
+    'default': {
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'mxonline',
+        'USER': 'root',
+        # 更换为你的密码
+        'PASSWORD': '1.',
+        'HOST': '127.0.0.1',
+        'PORT': 3306,
+    }
+}
+```
+
+##### 在 MySQL 数据库中创建 mxonline 数据库
+
+- 在 Navicat 中新建一个名为 mxonline 的 MySQL 数据库
+
+##### 生成 Django 默认数据表
+
+- 项目根目录下分别执行 `python manage.py makemigrations`, `python manage.py migrate` 命令
+
 
 ## 测试
 
