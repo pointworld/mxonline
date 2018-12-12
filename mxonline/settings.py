@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'users',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+# 此处重载是为了使我们的 UserProfile 生效
+AUTH_USER_MODEL = 'users.UserProfile'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
