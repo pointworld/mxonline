@@ -63,8 +63,8 @@ class CourseComments(models.Model):
     """
 
     # 涉及两个外键: 用户、课程
-    user = models.ForeignKey(UserProfile, verbose_name='user', on_delete='')
-    course = models.ForeignKey(Course, verbose_name='course', on_delete='')
+    user = models.ForeignKey(UserProfile, verbose_name='user', on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, verbose_name='course', on_delete=models.CASCADE)
     comments = models.CharField(max_length=250, verbose_name='comments')
     add_time = models.DateTimeField(
         verbose_name='add time',
@@ -166,8 +166,8 @@ class UserCourse(models.Model):
     """
 
     # 涉及两个外键: 用户、课程
-    user = models.ForeignKey(UserProfile, verbose_name='user', on_delete='')
-    course = models.ForeignKey(Course, verbose_name='course', on_delete='')
+    user = models.ForeignKey(UserProfile, verbose_name='user', on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, verbose_name='course', on_delete=models.CASCADE)
     add_time = models.DateTimeField(
         verbose_name='add time',
         default=datetime.now

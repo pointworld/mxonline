@@ -42,16 +42,19 @@ mxonline/
                 index.md
             organization/
                 index.md
+            operation/
+                index.md
     mxonline/
         __init__.py
         settings.py
         urls.py
         wsgi.py
     templates/
-    courses/                              app: courses
-    users/                                app: users
-    organization/                         app: organization
-    operation/                            app: operation
+    apps/
+        courses/                          app: courses
+        users/                            app: users
+        organization/                     app: organization
+        operation/                        app: operation
     venv/
     .gitignore
     manage.py

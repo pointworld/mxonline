@@ -76,7 +76,7 @@ class Lesson(models.Model):
     # 外键：课程
     # 一个课程对应很多章节。所以在章节表中将课程设置为外键
     # 作为一个字段来让我们可以知道这个章节对应那个课程
-    course = models.ForeignKey(Course, verbose_name='course', on_delete='')
+    course = models.ForeignKey(Course, verbose_name='course', on_delete=models.CASCADE)
     # 章节名
     name = models.CharField(max_length=100, verbose_name='lesson name')
     # 添加时间
@@ -99,7 +99,7 @@ class Video(models.Model):
     # 外键：章节
     # 因为一个章节对应很多视频。所以在视频表中将章节设置为外键
     # 作为一个字段来存储让我们可以知道这个视频对应哪个章节
-    lesson = models.ForeignKey(Lesson, verbose_name='lesson', on_delete='')
+    lesson = models.ForeignKey(Lesson, verbose_name='lesson', on_delete=models.CASCADE)
     # 视频名
     name = models.CharField(max_length=100, verbose_name='video name')
     # 添加时间
@@ -122,7 +122,7 @@ class CourseResource(models.Model):
     # 外键：课程
     # 因为一个课程对应很多资源。所以在课程资源表中将课程设置为外键
     # 作为一个字段来让我们可以知道这个资源对应那个课程
-    course = models.ForeignKey(Course, verbose_name='course', on_delete='')
+    course = models.ForeignKey(Course, verbose_name='course', on_delete=models.CASCADE)
     # 资源名
     name = models.CharField(max_length=100, verbose_name='resource name')
     # 这里定义成文件类型的字段，后台管理系统中会直接生成上传的按钮
