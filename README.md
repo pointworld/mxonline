@@ -35,22 +35,19 @@ mxonline/
         be/                               存放后端开发文档
             users/
                 user_profile.md
+                index.md
                 email_auth_code.md
                 slide.md
+            courses/
+                index.md
     mxonline/
         __init__.py
         settings.py
         urls.py
         wsgi.py
     templates/
+    courses/                              app: courses
     users/                                app: users
-        migrations/
-        __init__.py
-        admin.py
-        apps.py
-        models.py
-        tests.py
-        views.py
     venv/
     .gitignore
     manage.py

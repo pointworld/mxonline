@@ -168,18 +168,12 @@ DATABASES = {
 
 - 项目根目录下分别执行 `python manage.py makemigrations`, `python manage.py migrate` 命令
 
-#### 开发 users app
+#### 开发相关 app
 
-- 在 web 开发中，user 表一般是最先被设计的
-- 设计原则：在原有 user 表的基础上新增字段或覆盖某些原有字段
-
-* 开发用户个人信息 - [user_profile]
-* 开发邮箱验证码 - [email_auth_code]
-* 开发轮播图 - [slide]
-
-#### 开发 courses app
-
-#### 开发 organization app
+* 开发 [users]
+* 开发 [courses]
+* 开发 [organization]
+* 开发 [operation]
 
 ## 测试
 
@@ -188,6 +182,7 @@ DATABASES = {
 ## 上线
 
 
-[user_profile]: docs/be/users/user_profile.md
-[email_auth_code]: docs/be/users/email_auth_code.md
-[slide]: docs/be/users/slide.md
+[users]: docs/be/users/index.md
+[courses]: docs/be/courses/index.md
+[organization]: docs/be/organization/index.md
+[operation]: docs/be/operation/index.md
