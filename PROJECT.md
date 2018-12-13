@@ -93,6 +93,10 @@ users:
     user_profile
         id, password, last_login, is_superuser, username, first_name, last_name, email,
         is_staff, date_joined, nickname, birthday, gender, address, mobile, avatar
+    email_auth_code
+        code, email, send_type, send_time
+    slide
+        title, image, url, index, add_time
 courses:
 organization:
 ```
@@ -169,8 +173,9 @@ DATABASES = {
 - 在 web 开发中，user 表一般是最先被设计的
 - 设计原则：在原有 user 表的基础上新增字段或覆盖某些原有字段
 
-* 开发 [user_profile]
-* 开发 [email_auth_code]
+* 开发用户个人信息 - [user_profile]
+* 开发邮箱验证码 - [email_auth_code]
+* 开发轮播图 - [slide]
 
 #### 开发 courses app
 
@@ -185,3 +190,4 @@ DATABASES = {
 
 [user_profile]: docs/be/users/user_profile.md
 [email_auth_code]: docs/be/users/email_auth_code.md
+[slide]: docs/be/users/slide.md

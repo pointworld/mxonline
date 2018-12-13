@@ -36,6 +36,7 @@ mxonline/
             users/
                 user_profile.md
                 email_auth_code.md
+                slide.md
     mxonline/
         __init__.py
         settings.py
