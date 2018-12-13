@@ -35,6 +35,7 @@ mxonline/
         be/                               存放后端开发文档
             users/
                 user_profile.md
+                email_auth_code.md
     mxonline/
         __init__.py
         settings.py
