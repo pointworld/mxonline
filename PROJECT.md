@@ -105,7 +105,22 @@ xadmin
 
 #### 数据库设计
 
-#### Django app 设计
+#### Django apps 设计
+
+分层设计，可以解决循环引用（如 user 和 course 之间）问题
+```text
+operation
+    users
+    courses
+    organization
+
+```
+
+- operation:
+    - 凌驾于 users、courses、organization 等 app 之上
+    - 用于记录用户相关的操作
+    - 可以解决循环引用的问题
+
 
 #### app models 设计
 

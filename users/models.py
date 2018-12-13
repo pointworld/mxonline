@@ -14,6 +14,7 @@ class UserProfile(AbstractUser):
     自定义 user 表
     原则：在原有 user 表的基础上新增字段或覆盖某些原有字段
     """
+
     # 自定义的性别选择规则
     GENDER_CHOICES = (
         ('male', 'male'),
@@ -57,6 +58,7 @@ class EmailAuthCode(models.Model):
     邮箱验证码
     放在 users 下，是因为这里的邮箱验证码只和用户有关，且功能比较独立
     """
+
     SEND_CHOICES = (
         ('register', 'register'),
         ('forget', 'retrieve password')
@@ -75,3 +77,29 @@ class EmailAuthCode(models.Model):
         verbose_name_plural = verbose_name
 
 
+class Slide(models.Model):
+    """
+    轮播图
+    是一个比较独立的功能，不会和其他 model 产生关系
+    故这里把它放到了 users 中
+    TODO: 是否还有更合适的放置位置
+    """
+
+    # 显示名称
+    title = models.CharField(max_length=100, verbose_name='title')
+    # 图片的路径地址
+    image = models.ImageField(
+        max_length=100,
+        upload_to='slide/%Y/%m',
+        verbose_name='slide image'
+    )
+    # 幻灯片的跳转
+    url = models.URLField(max_length=200, verbose_name='access url')
+    # 幻灯片索引
+    index = models.IntegerField(default=100, verbose_name='index')
+    # 该记录的生成时间
+    add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
+
+    class Meta:
+        verbose_name = 'slide'
+        verbose_name_plural = verbose_name
