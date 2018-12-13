@@ -40,6 +40,8 @@ mxonline/
                 slide.md
             courses/
                 index.md
+            organization/
+                index.md
     mxonline/
         __init__.py
         settings.py
@@ -48,6 +50,7 @@ mxonline/
     templates/
     courses/                              app: courses
     users/                                app: users
+    organization/                         app: organization
     venv/
     .gitignore
     manage.py
