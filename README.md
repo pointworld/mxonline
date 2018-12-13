@@ -51,6 +51,7 @@ mxonline/
     courses/                              app: courses
     users/                                app: users
     organization/                         app: organization
+    operation/                            app: operation
     venv/
     .gitignore
     manage.py
