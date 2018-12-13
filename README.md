@@ -31,17 +31,28 @@ $ python manage.py runserver
 
 ```text
 mxonline/
-    docs/                                 存放项目文档
+    docs/                                 存放项目开发文档
+        be/                               存放后端开发文档
+            users/
+                user_profile.md
     mxonline/
         __init__.py
         settings.py
         urls.py
         wsgi.py
     templates/
+    users/                                app: users
+        migrations/
+        __init__.py
+        admin.py
+        apps.py
+        models.py
+        tests.py
+        views.py
     venv/
     .gitignore
     manage.py
-    PROJECT.md
-    README.md
+    PROJECT.md                            项目开发文档
+    README.md                             项目简介
     requirements.txt                      管理 Python 依赖
 ```
