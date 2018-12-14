@@ -43,7 +43,7 @@ class Course(models.Model):
     add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
 
     class Meta:
-        verbose_name = 'course'
+        verbose_name = 'Course'
         # verbose_name_plural = verbose_name
 
 
@@ -62,7 +62,7 @@ class Lesson(models.Model):
     add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
 
     class Meta:
-        verbose_name = 'lesson'
+        verbose_name = 'Lesson'
         # verbose_name_plural = verbose_name
 
 
@@ -81,7 +81,7 @@ class Video(models.Model):
     add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
 
     class Meta:
-        verbose_name = 'video'
+        verbose_name = 'Video'
         # verbose_name_plural = verbose_name
 
 
@@ -107,5 +107,5 @@ class CourseResource(models.Model):
     add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
 
     class Meta:
-        verbose_name = 'course resource'
+        verbose_name = 'Course Resource'
         # verbose_name_plural = verbose_name
