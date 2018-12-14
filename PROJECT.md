@@ -86,37 +86,14 @@
 
 #### 数据库设计
 
-根据业务设计所需表的相关字段
-
-```text
-users: 
-    user_profile
-        id, password, last_login, is_superuser, username, first_name, last_name, email,
-        is_staff, date_joined, nickname, birthday, gender, address, mobile, avatar
-    email_auth_code
-        code, email, send_type, send_time
-    slide
-        title, image, url, index, add_time
-courses:
-organization:
-```
-
-#### 搭建后台管理系统任务
-
-xadmin
-
-### 设计
-
-#### 数据库设计
-
-#### Django apps 设计
+根据业务设计所需表
 
 分层设计，可以解决循环引用（如 user 和 course 之间）问题
 ```text
-operation
-    users
-    courses
-    organization
+operation           - 操作
+    users           - 用户
+    courses         - 课程
+    organization    - 机构与讲师
 
 ```
 
@@ -125,8 +102,31 @@ operation
     - 用于记录用户相关的操作
     - 可以解决循环引用的问题
 
+```text
+users: 
+    user_profile            -- 用户个人信息
+    email_auth_code         -- 邮箱验证码
+    slide                   -- 轮播图相关信息
+courses:
+    course                  -- 课程基本信息
+    lesson                  -- 章节基本信息
+    video                   -- 视频基本信息
+    course_resource         -- 课程资源相关信息
+organization:
+    course_org              -- 课程机构相关信息
+    teacher                 -- 讲师相关信息
+    city_dict               -- 城市相关信息
+operation:
+    user_consulting         -- 用户咨询
+    course_comments         -- 用户评论
+    course_favorite         -- 课程收藏
+    user_message            -- 用户消息
+    user_course             -- 用户学习的课程
+```
 
-#### app models 设计
+#### 搭建后台管理系统任务
+
+xadmin
 
 ### 开发
 
