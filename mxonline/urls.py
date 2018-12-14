@@ -16,11 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from users.views import index, user_login
+from users.views import index, LoginView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('', index, name='index'),
-    path('login/', user_login, name='login'),
-    path('register/', user_login, name='register'),
+    path('admin/', admin.site.urls),
+
+    # 基于类方法实现登录页处理逻辑，as_view 是 View 类的一个类方法
+    # 是 Main entry point for a request-response process
+    # as_view 最终会返回一个 view
+    path('login/', LoginView.as_view(), name='login'),
+    path('register/', LoginView.as_view(), name='register'),
 ]
