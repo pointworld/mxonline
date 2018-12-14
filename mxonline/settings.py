@@ -33,6 +33,11 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+# 邮箱和用户名均可登录
+AUTHENTICATION_BACKENDS = (
+    'users.views.CustomBackend',
+)
+
 INSTALLED_APPS = [
     'users',
     'courses',
@@ -138,6 +143,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+# 指明静态文件放在哪个目录
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
