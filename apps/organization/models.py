@@ -16,7 +16,8 @@ class CityDict(models.Model):
     add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
 
     class Meta:
-        verbose_name = 'city'
+        verbose_name = 'City'
+        verbose_name_plural = 'Cities'
 
 
 class CourseOrg(models.Model):
@@ -40,7 +41,7 @@ class CourseOrg(models.Model):
     add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
 
     class Meta:
-        verbose_name = 'course organization'
+        verbose_name = 'Course Organization'
         # verbose_name_plural = verbose_name
 
 
