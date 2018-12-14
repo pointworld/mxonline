@@ -45,8 +45,8 @@ class UserProfile(AbstractUser):
 
     # meta 信息，即后台栏目名
     class Meta:
-        verbose_name = 'user info'
-        verbose_name_plural = verbose_name
+        verbose_name = 'User Info'
+        # verbose_name_plural = verbose_name
 
     # 重载 __str__ 方法，打印实例时会打印 username，username 继承自 AbstractUser
     def __str__(self):
@@ -68,13 +68,23 @@ class EmailAuthCode(models.Model):
     # 邮箱
     email = models.EmailField(max_length=50, verbose_name='email')
     # 发送类型（注册、找回密码）
-    send_type = models.CharField(max_length=10, choices=SEND_CHOICES)
+    send_type = models.CharField(
+        max_length=10,
+        choices=SEND_CHOICES,
+        verbose_name='auth code type',
+    )
     # 发送时间，这里的 now 得去掉 ()，不去掉会根据编译时间。而不是根据实例化时间。
-    send_time = models.DateTimeField(default=datetime.now)
+    send_time = models.DateTimeField(
+        default=datetime.now,
+        verbose_name='send time'
+    )
 
     class Meta:
-        verbose_name = 'email auth code'
-        verbose_name_plural = verbose_name
+        verbose_name = 'Email Auth Code'
+        # verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return '{0}({1})'.format(self.code,self.email)
 
 
 class Slide(models.Model):
@@ -101,5 +111,5 @@ class Slide(models.Model):
     add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
 
     class Meta:
-        verbose_name = 'slide'
-        verbose_name_plural = verbose_name
+        verbose_name = 'Slide'
+        # verbose_name_plural = verbose_name
