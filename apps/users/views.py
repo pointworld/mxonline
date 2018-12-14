@@ -9,6 +9,7 @@ from django.db.models import Q
 from django.views.generic.base import View
 
 from .models import UserProfile
+from .forms import LoginForm
 
 """
 Create your views here.
@@ -32,20 +33,31 @@ class LoginView(View):
         return render(request, 'login.html', {})
 
     def post(self, request):
-        username = request.POST.get('username', '')
-        password = request.POST.get('password', '')
-        # 验证成功返回 user 对象否则返回 None
-        user = authenticate(username=username, password=password)
-        # 用户存在则跳转到首页
-        if user is not None:
-            # login 函数接收两个参数：request、user，函数会对 request 做处理，
-            # 使 request 携带有 user 等信息
-            login(request, user)
-            # 这些信息会被处理成响应，最终返回到浏览器，完成登录
-            return render(request, 'index.html', {})
-        # 用户不存在则重新跳转到登录页
+        # 类实例化需要一个字典参数，而 request.POST 就是一个 QueryDict 所以直接传入
+        # POST 中的 username password，会对应到 form 中
+        # 实例化 LoginView 时，会对表单字段进行了验证
+        login_form = LoginForm(request.POST)
+
+        # is_valid 判断我们表单字段是否有效，有效则执行我们原有逻辑
+        if login_form.is_valid():
+
+            username = request.POST.get('username', '')
+            password = request.POST.get('password', '')
+            # 验证成功返回 user 对象否则返回 None
+            user = authenticate(username=username, password=password)
+            # 用户存在则跳转到首页
+            if user is not None:
+                # login 函数接收两个参数：request、user，函数会对 request 做处理，
+                # 使 request 携带有 user 等信息
+                login(request, user)
+                # 这些信息会被处理成响应，最终返回到浏览器，完成登录
+                return render(request, 'index.html', {})
+            # 用户不存在则重新跳转到登录页
+            else:
+                return render(request, 'login.html', {'msg': '用户名或密码错误！'})
+        # 表单字段无效则跳回 login 页面，减轻对数据库查询的负担
         else:
-            return render(request, 'login.html', {'msg': '用户名或密码错误！'})
+            return render(request, 'login.html', {'login_form': login_form})
 
 
 class CustomBackend(ModelBackend):
