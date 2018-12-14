@@ -30,17 +30,6 @@ function comment_toggle(){
 	});
 
 
-	//$('.com_child_toggle').live('click',function(){
-	//	 $(this).toggle(function(){
-	//	 	$(this).parent().parent().parent().parent().find('>div:last').css('display','block').find("textarea").focus().val("回复"+$(this).next().html()+":").attr("vu","回复"+$(this).next().html()+":");
-	//	 	$(this).parent().parent().find('>div:last').find('textarea').keyup(re_keyup);
-	//		 child_uid = "child_"+$(this).nextAll("span:last").html();
-	//	 	$(this).parent().parent().parent().parent().find('>div:last').find('.btnbox').attr("id",child_uid);
-	//	 },function(){
-	//	 	$(this).parent().parent().parent().parent().find('>div:last').css('display','none').find("textarea").focus().val("回复"+$(this).next().html()+":");
-	//	 }).trigger('click');
-	//});
-
 }
 
 function submit_comment(){
@@ -164,7 +153,6 @@ function html_decode(str)
   return s;   
 }
 
-//zhouyi:7-30修改
 function page_commment(page){
 	var lesson_id = $("#lesson-id").val();
 	if(page<=0) page=1;
