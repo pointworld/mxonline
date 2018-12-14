@@ -63,16 +63,15 @@ function search_click(){
     var type = $('#jsSelectOption').attr('data-value'),
         keywords = $('#search_keywords').val(),
         request_url = '';
-    if(type == "group"){
-        request_url = "/group/list?search_type=group&keywords="+keywords
-    }else if(type == "company"){
-        request_url = "/company/list?search_type=company&keywords="+keywords
-    }else if(type == "knowledge"){
-        request_url = "/knowledge/list?search_type=knowledge&keywords="+keywords
-    }else if(type == "diary"){
-        request_url = "/diary/diary/list/?search_type=diary&keywords="+keywords
-    }else if(type == "hk"){
-        request_url = "/diary/hk/list?search_type=hk&keywords="+keywords
+    if(keywords == ""){
+        return
+    }
+    if(type == "course"){
+        request_url = "/course/list?keywords="+keywords
+    }else if(type == "teacher"){
+        request_url = "/org/teacher/list?keywords="+keywords
+    }else if(type == "org"){
+        request_url = "/org/list?keywords="+keywords
     }
     window.location.href = request_url
 }
