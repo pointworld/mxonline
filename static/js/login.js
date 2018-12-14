@@ -45,7 +45,7 @@ function zy_Countdown(){
 function refresh_captcha(event){
     $.get("/captcha/refresh/?"+Math.random(), function(result){
         $('#'+event.data.form_id+' .captcha').attr("src",result.image_url);
-        $('#id_captcha_0').attr("value",result.key);
+        $('#'+event.data.form_id+' .form-control-captcha[type="hidden"]').attr("value",result.key);
     });
     return false;
 }
