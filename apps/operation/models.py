@@ -29,6 +29,7 @@ class UserConsulting(models.Model):
 
     class Meta:
         verbose_name = 'user consulting'
+        verbose_name_plural = verbose_name
 
     def __str__(self):
         return 'user: {0} mobile: {1}'.format(self.name, self.mobile)
@@ -85,7 +86,8 @@ class UserFavorite(models.Model):
     )
 
     class Meta:
-        verbose_name = 'user favorite'
+        verbose_name = 'User Favorite'
+        verbose_name_plural = verbose_name
 
     def __str__(self):
         return 'user({0}) has a collection to {1}'.format(
@@ -120,6 +122,7 @@ class UserMessage(models.Model):
 
     class Meta:
         verbose_name = 'user message'
+        verbose_name_plural = verbose_name
 
 
 class UserCourse(models.Model):
