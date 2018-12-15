@@ -18,9 +18,22 @@ class OrgView(View):
     def get(self, request):
         # 课程机构
         all_orgs = CourseOrg.objects.all()
-        org_nums = all_orgs.count()
+
         # 城市
         all_cities = CityDict.objects.all()
+
+        # 城市筛选
+        city_id = request.GET.get('city', '')
+        if city_id:
+            all_orgs = all_orgs.filter(city_id=int(city_id))
+
+        # 类别筛选
+        category = request.GET.get('ct', '')
+        if category:
+            all_orgs = all_orgs.filter(category=category)
+
+        # 当前机构数量
+        org_nums = all_orgs.count()
 
         # 对课程机构进行分页
         try:
@@ -37,4 +50,6 @@ class OrgView(View):
             'all_orgs': orgs,
             'all_cities': all_cities,
             'org_nums': org_nums,
+            'city_id': city_id,
+            'category': category,
         })

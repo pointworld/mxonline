@@ -23,19 +23,23 @@
                         <li>
                             <h2>机构类别</h2>
                             <div class="cont">
-                                <a href="?city="><span class="active2">全部</span></a>
-                                <a href="?ct=pxjg&city="><span class="">培训机构</span></a>
-                                <a href="?ct=gx&city="><span class="">高校</span></a>
-                                <a href="?ct=gr&city="><span class="">个人</span></a>
+                                <a href="?city={{ city_id }}"><span class="{% ifequal category '' %}active2{% endifequal %}">全部</span></a>
+                                <a href="?ct=pxjg&city={{ city_id }}"><span class="{% ifequal category 'pxjg' %}active2{% endifequal %}">培训机构</span></a>
+                                <a href="?ct=gx&city={{ city_id }}"><span class="{% ifequal category 'gx' %}active2{% endifequal %}">高校</span></a>
+                                <a href="?ct=gr&city={{ city_id }}"><span class="{% ifequal category 'gr' %}active2{% endifequal %}">个人</span></a>
                             </div>
                         </li>
                         <li>
                             <h2>所在地区</h2>
                             <div class="more">更多</div>
                             <div class="cont">
-                                <a href="?ct="><span class="active2">全部</span></a>
+                                <a href="?ct={{ category }}"><span class="{% ifequal city_id '' %}active2{% endifequal %}">全部</span></a>
                                 {% for city in all_cities %}
-                                    <a href="?city=1&ct="><span class="">{{ city.name }}</span></a>
+                                    <a href="?city={{ city.id }}&ct={{ category }}">
+                                        <span
+                                            class="{% ifequal city_id city.id|stringformat:'i' %}active2{% endifequal %}">{{ city.name }}
+                                        </span>
+                                    </a>
                                 {% endfor %}
                             </div>
                         </li>
