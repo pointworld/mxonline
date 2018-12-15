@@ -28,5 +28,5 @@ class TeacherAdmin(admin.ModelAdmin):
 
 
 admin.site.register(CityDict, CityDictAdmin)
-admin.site.register(CourseOrg, CityDictAdmin)
+admin.site.register(CourseOrg, CourseOrgAdmin)
 admin.site.register(Teacher, TeacherAdmin)

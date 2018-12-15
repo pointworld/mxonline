@@ -157,3 +157,8 @@ EMAIL_HOST_USER = 'youremail@sina.com'
 EMAIL_HOST_PASSWORD = 'yourauthcode'
 EMAIL_USE_TLS = False
 EMAIL_FROM = 'youremail@sina.com'
+
+# 资源文件的相关配置
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
