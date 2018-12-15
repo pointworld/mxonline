@@ -16,19 +16,27 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 
-from users.views import index, LoginView, RegisterView, ActiveUserView
+from users.views import index, LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetPwdView, ModifyPwdView
 
 urlpatterns = [
-    path('', index, name='index'),
     path('admin/', admin.site.urls),
 
-    # 基于类方法实现登录页处理逻辑，as_view 是 View 类的一个类方法
-    # 是 Main entry point for a request-response process
-    # as_view 最终会返回一个 view
+    # 首页
+    path('', index, name='index'),
+    # 登录
     path('login/', LoginView.as_view(), name='login'),
+    # 注册
     path('register/', RegisterView.as_view(), name='register'),
-    # 图片验证码 url
+    # 图片验证码
     path('captcha/', include('captcha.urls')),
     # 邮箱激活
-    re_path('active/(?P<active_code>.*)/', ActiveUserView.as_view(), name='user_active'),
+    re_path('active/(?P<active_code>.*)/', ActiveUserView.as_view(),
+            name='user_active'),
+    # 忘记密码
+    path('forget/', ForgetPwdView.as_view(), name='forget_psd'),
+    # 密码重置
+    re_path('reset/(?P<active_code>.*)/', ResetPwdView.as_view(),
+            name='reset_pwd'),
+    # 修改密码
+    path('modify_pwd/', ModifyPwdView.as_view(), name='modify_psd'),
 ]

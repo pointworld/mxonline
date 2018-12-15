@@ -10,8 +10,8 @@ from django.db.models import Q
 from django.views.generic.base import View
 
 from .models import UserProfile, EmailAuthCode
-from .forms import LoginForm, RegisterForm
-from utils.email_send import send_register_email
+from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm
+from utils.email_send import send_register_or_forget_email
 
 """
 Create your views here.
@@ -22,34 +22,16 @@ Django 的 view 实际就是一个函数，接收 request 请求对象，处理�
 
 def index(request):
     """
-    首页处理函数
+    首页的处理逻辑
     :param request:
     :return: response
     """
     return render(request, 'index.html', {})
 
 
-class ActiveUserView(View):
-    """
-
-    """
-
-    def get(self, request, active_code):
-        all_records = EmailAuthCode.objects.filter(code=active_code)
-        if all_records:
-            for record in all_records:
-                email = record.email
-                user = UserProfile.objects.get(email=email)
-                user.is_active = True
-                user.save()
-        else:
-            return render(request, 'active_fail.html')
-        return render(request, 'login.html')
-
-
 class RegisterView(View):
     """
-    注册
+    注册模块的处理逻辑
     """
 
     def get(self, request):
@@ -85,7 +67,7 @@ class RegisterView(View):
             user_profile.save()
 
             # 发送注册激活邮件
-            send_register_email(username, 'register')
+            send_register_or_forget_email(username, 'register')
             return render(request, 'login.html', {})
         else:
             return render(request, 'register.html', {'register_form': register_form})
@@ -93,7 +75,7 @@ class RegisterView(View):
 
 class LoginView(View):
     """
-    登录页处理类
+    登录模块的处理逻辑
     调用时会自动判断 request.method == 'GET' 或 request.method == 'POST'
     然后调用下面定义的 get 方法或 post 方法来处理登录逻辑
     """
@@ -136,6 +118,88 @@ class LoginView(View):
             return render(request, 'login.html', {'login_form': login_form})
 
 
+class ActiveUserView(View):
+    """
+    激活用户模块的处理逻辑
+    """
+
+    def get(self, request, active_code):
+        all_records = EmailAuthCode.objects.filter(code=active_code)
+        if all_records:
+            for record in all_records:
+                email = record.email
+                user = UserProfile.objects.get(email=email)
+                user.is_active = True
+                user.save()
+        else:
+            return render(request, 'active_fail.html')
+        return render(request, 'login.html')
+
+
+class ForgetPwdView(View):
+    """
+    忘记密码模块的处理逻辑
+    """
+
+    def get(self, request):
+        forget_form = ForgetForm()
+        return render(request, 'forgetpwd.html', {'forget_form': forget_form})
+
+    def post(self, request):
+        forget_form = ForgetForm(request.POST)
+        if forget_form.is_valid():
+            email = request.POST.get('email', '')
+            # 发送找回密码邮件
+            send_register_or_forget_email(email, 'forget')
+            # 发送完毕返回登录页面并显示发送邮件成功
+            return render(request, 'send_success.html')
+        else:
+            return render(request, 'forgetpwd.html', {'forget_form': forget_form})
+
+
+class ModifyPwdView(View):
+    """
+    重置密码模块的处理逻辑
+    """
+
+    def post(self, request):
+        modify_form = ModifyPwdForm(request.POST)
+        if modify_form.is_valid():
+            pwd1 = request.POST.get('password1', '')
+            pwd2 = request.POST.get('password2', '')
+            email = request.POST.get('email', '')
+            if pwd1 != pwd2:
+                return render(request, 'password_reset.html', {'email': email, 'msg': '密码不一致！'})
+            user = UserProfile.objects.get(email=email)
+            # 加密成密文
+            user.password = make_password(pwd2)
+            # 保存到数据库
+            user.save()
+
+            return render(request, 'login.html')
+        else:
+            email = request.POST.get('email', '')
+            return render(request, 'password_reset.html', {'email': email, 'modify_form': modify_form})
+
+
+class ResetPwdView(View):
+    """
+    重置密码模块的处理逻辑
+    """
+
+    def get(self, request, active_code):
+        # 查询邮箱验证码是否存在
+        all_records = EmailAuthCode.objects.filter(code=active_code)
+        # 如果不为空也就是有用户
+        if all_records:
+            for record in all_records:
+                email = record.email
+                return render(request, 'password_reset.html', {'email': email})
+        else:
+            return render(request, 'active_fail.html')
+        return render(request, 'login.html')
+
+
 class CustomBackend(ModelBackend):
     """
     自定义 authenticate 方法，使其支持使用用户名或邮箱登录
@@ -151,5 +215,3 @@ class CustomBackend(ModelBackend):
                 return user
         except Exception as e:
             return None
-
-
