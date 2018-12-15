@@ -19,6 +19,9 @@ class OrgView(View):
         # 课程机构
         all_orgs = CourseOrg.objects.all()
 
+        # 热门机构
+        hot_orgs = all_orgs.order_by('-hit_nums')[:3]
+
         # 城市
         all_cities = CityDict.objects.all()
 
@@ -52,4 +55,5 @@ class OrgView(View):
             'org_nums': org_nums,
             'city_id': city_id,
             'category': category,
+            'hot_orgs': hot_orgs,
         })
