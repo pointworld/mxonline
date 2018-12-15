@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'courses',
     'organization',
     'operation',
+    'captcha',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -147,3 +148,12 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+# 发送邮件的相关配置
+
+EMAIL_HOST = 'smtp.sina.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'youremail@sina.com'
+EMAIL_HOST_PASSWORD = 'yourauthcode'
+EMAIL_USE_TLS = False
+EMAIL_FROM = 'youremail@sina.com'

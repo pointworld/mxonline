@@ -14,9 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include, re_path
 
-from users.views import index, LoginView
+from users.views import index, LoginView, RegisterView, ActiveUserView
 
 urlpatterns = [
     path('', index, name='index'),
@@ -26,5 +26,9 @@ urlpatterns = [
     # 是 Main entry point for a request-response process
     # as_view 最终会返回一个 view
     path('login/', LoginView.as_view(), name='login'),
-    path('register/', LoginView.as_view(), name='register'),
+    path('register/', RegisterView.as_view(), name='register'),
+    # 图片验证码 url
+    path('captcha/', include('captcha.urls')),
+    # 邮箱激活
+    re_path('active/(?P<active_code>.*)/', ActiveUserView.as_view(), name='user_active'),
 ]
