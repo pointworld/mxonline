@@ -79,6 +79,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # Add media-related context variables to the context
+                # 使 MEDIA_URL 可以在 Django 模板中使用
+                'django.template.context_processors.media',
             ],
         },
     },

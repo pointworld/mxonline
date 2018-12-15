@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
+# Serve static files below a given point in the directory structure
+from django.views.static import serve
 
+from mxonline.settings import MEDIA_ROOT
 from organization.views import OrgView
 from users.views import index, LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetPwdView, ModifyPwdView
 
@@ -43,4 +46,7 @@ urlpatterns = [
 
     # 课程机构首页
     path('org_list/', OrgView.as_view(), name='org_list'),
+
+    # 上传文件的访问处理
+    re_path('media/(?P<path>.*)', serve, {'document_root': MEDIA_ROOT}),
 ]
