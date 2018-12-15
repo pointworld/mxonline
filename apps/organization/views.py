@@ -35,6 +35,14 @@ class OrgView(View):
         if category:
             all_orgs = all_orgs.filter(category=category)
 
+        # 排序
+        sort = request.GET.get('sort', '')
+        if sort:
+            if sort == 'learners':
+                all_orgs = all_orgs.order_by('-learners')
+            elif sort == 'course_nums':
+                all_orgs = all_orgs.order_by('-course_nums')
+
         # 当前机构数量
         org_nums = all_orgs.count()
 
@@ -56,4 +64,5 @@ class OrgView(View):
             'city_id': city_id,
             'category': category,
             'hot_orgs': hot_orgs,
+            'sort': sort,
         })
