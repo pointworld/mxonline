@@ -19,11 +19,11 @@ class CourseOrgAdmin(admin.ModelAdmin):
 
 
 class TeacherAdmin(admin.ModelAdmin):
-    list_display = ['name', 'gender', 'age', 'org', 'work_years', 'company', 'post', 'style',
+    list_display = ['name', 'gender', 'org', 'work_years', 'company', 'post', 'style',
                     'hit_nums', 'fav_nums', 'add_time']
-    list_filter = ['name', 'gender', 'age', 'org', 'work_years', 'company', 'post', 'style',
+    list_filter = ['name', 'gender', 'org', 'work_years', 'company', 'post', 'style',
                    'hit_nums', 'fav_nums', 'add_time']
-    search_fields = ['name', 'gender', 'age', 'org', 'work_years', 'company', 'post', 'style',
+    search_fields = ['name', 'gender', 'org', 'work_years', 'company', 'post', 'style',
                      'hit_nums', 'fav_nums']
 
 

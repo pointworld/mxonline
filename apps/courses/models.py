@@ -3,6 +3,8 @@ from datetime import datetime
 
 from django.db import models
 
+from organization.models import CourseOrg
+
 # Create your models here.
 
 class Course(models.Model):
@@ -16,6 +18,14 @@ class Course(models.Model):
         ('adv', 'advanced'),
     )
 
+    # 外键
+    course_org = models.ForeignKey(
+        CourseOrg,
+        verbose_name='course organization',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
     # 课程名
     name = models.CharField(max_length=50, verbose_name='course name')
     # 课程描述
@@ -33,7 +43,7 @@ class Course(models.Model):
     fav_nums = models.IntegerField(default=0, verbose_name='number of favorites')
     # 课程封面
     cover = models.ImageField(
-        max_length='100',
+        max_length=100,
         upload_to='courses/%Y/%m',
         verbose_name='cover'
     )
@@ -45,6 +55,9 @@ class Course(models.Model):
     class Meta:
         verbose_name = 'Course'
         # verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
 
 
 class Lesson(models.Model):

@@ -8,6 +8,7 @@ from pure_pagination import Paginator, PageNotAnInteger
 
 from .models import CourseOrg, CityDict
 from .forms import UserConsultingForm
+from courses.models import Course
 
 
 # Create your views here.
@@ -93,3 +94,72 @@ class AddUserConsultingView(View):
                 content_type='application/json'
             )
 
+
+class OrgHomeView(View):
+    """
+    机构首页
+    """
+
+    def get(self, request, org_id):
+        current_page = 'home'
+        # 根据 id 取到课程机构
+        course_org = CourseOrg.objects.get(id=int(org_id))
+        # 通过课程机构找到课程。内建的变量，找到指向这个字段的外键引用
+        all_courses = course_org.course_set.all()[:3]
+        all_teachers = course_org.teacher_set.all()[:1]
+        return render(request, 'org-detail-homepage.html', {
+            'all_courses': all_courses,
+            'all_teachers': all_teachers,
+            'course_org': course_org,
+            'current_page': current_page,
+        })
+
+
+class OrgCourseView(View):
+    """
+    机构课程列表页
+    """
+
+    def get(self, request, org_id):
+        current_page = 'course'
+        # 根据 id 取到课程机构
+        course_org = CourseOrg.objects.get(id=int(org_id))
+        # 通过课程机构找到课程。内建的变量，找到指向这个字段的外键引用
+        all_courses = course_org.course_set.all()
+        return render(request, 'org-detail-course.html', {
+            'all_courses': all_courses,
+            'course_org': course_org,
+            'current_page': current_page,
+        })
+
+
+class OrgDescView(View):
+    """
+    机构介绍
+    """
+
+    def get(self, request, org_id):
+        current_page = 'desc'
+        # 根据 id 取到课程机构
+        course_org = CourseOrg.objects.get(id=int(org_id))
+        return render(request, 'org-detail-desc.html', {
+            'course_org': course_org,
+            'current_page': current_page,
+        })
+
+
+class OrgTeacherView(View):
+    """
+    机构讲师
+    """
+
+    def get(self, request, org_id):
+        current_page = 'teacher'
+        # 根据 id 取到课程机构
+        course_org = CourseOrg.objects.get(id=int(org_id))
+        all_teachers = course_org.teacher_set.all()
+        return render(request, 'org-detail-teachers.html', {
+            'all_teachers': all_teachers,
+            'course_org': course_org,
+            'current_page': current_page,
+        })
