@@ -83,7 +83,7 @@
                                             <li>
                                                 <a
                                                     target="_blank"
-                                                    href='/video/3662'
+                                                    href='{% url "course:video_play" video.id %}'
                                                     class="J-media-item studyvideo">
                                                     {{ video.name }} ({{ video.duration }})
                                                     <i class="study-state"></i>

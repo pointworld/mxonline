@@ -9,7 +9,7 @@ from pure_pagination import Paginator, PageNotAnInteger
 
 from operation.models import UserFavorite, CourseComments, UserCourse
 from utils.mixin_utils import LoginRequiredMixin
-from .models import Course, CourseResource
+from .models import Course, CourseResource, Video
 
 
 # Create your views here.
@@ -179,3 +179,37 @@ class AddCommentsView(View):
             return HttpResponse('{"status": "success", "msg": "添加成功"}', content_type='application/json')
         else:
             return HttpResponse('{"status": "fail", "msg": "添加失败"}', content_type='application/json')
+
+
+class VideoPlayView(View):
+    """
+    视频播放
+    """
+    def get(self, request, video_id):
+        video = Video.objects.get(id=int(video_id))
+        course = video.lesson.course
+
+        # 查询用户是否已经关联了该课程
+        course_users = UserCourse.objects.filter(user=request.user, course=course)
+        if not course_users:
+            user_course = UserCourse(user=request.user, course=course)
+            user_course.save()
+
+        # 取出学过该课程的所有用户
+        course_users = UserCourse.objects.filter(course=course)
+        # 取出学过该课程的所有用户的 id 列表
+        user_ids = [course_user.user.id for course_user in course_users]
+        # 取出该用户学过的所有课程
+        user_all_courses = UserCourse.objects.filter(user_id__in=user_ids)
+        # 取出该用户学过的所有课程 id
+        user_course_ids = [user_course.course.id for user_course in user_all_courses]
+        # 获取该用户学过的其他所有课程
+        related_courses = Course.objects.filter(id__in=user_course_ids).order_by('-hit_nums')[:5]
+        all_resources = CourseResource.objects.filter(course=course)
+
+        return render(request, 'course-play.html', {
+            'course': course,
+            'all_resources': all_resources,
+            'related_courses': related_courses,
+            'video': video,
+        })
