@@ -6,7 +6,7 @@ __date__ = '2018-12-17'
 
 from django.urls import path, re_path
 
-from courses.views import CourseListView, CourseDetailView
+from courses.views import CourseListView, CourseDetailView, CourseInfoView
 
 app_name = 'courses'
 
@@ -15,4 +15,6 @@ urlpatterns = [
     path('list/', CourseListView.as_view(), name='course_list'),
     # 课程详情
     re_path('detail/(?P<course_id>\d+)/', CourseDetailView.as_view(), name='course_detail'),
+    # 课程章节详情
+    re_path('info/(?P<course_id>\d+)/', CourseInfoView.as_view(), name='course_info'),
 ]

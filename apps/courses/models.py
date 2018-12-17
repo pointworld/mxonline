@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.db import models
 
-from organization.models import CourseOrg
+from organization.models import CourseOrg, Teacher
 
 
 # Create your models here.
@@ -54,11 +54,21 @@ class Course(models.Model):
     category = models.CharField(max_length=20, verbose_name='course category', default='backend')
     tag = models.CharField(default='', verbose_name='course tag', max_length=10)
     # 课程添加时间
+    teacher = models.ForeignKey(Teacher, verbose_name='teacher', null=True, blank=True, on_delete=models.CASCADE)
+    note = models.CharField(max_length=300, verbose_name='notes of course', default='')
+    target = models.CharField(max_length=300, verbose_name='targets of course', default='')
     add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
 
     class Meta:
         verbose_name = 'Course'
         # verbose_name_plural = verbose_name
+
+    def get_course_lesson(self):
+        """
+        获取课程的所有章节
+        :return:
+        """
+        return self.lesson_set.all()
 
     def get_lesson_nums(self):
         """
@@ -92,6 +102,16 @@ class Lesson(models.Model):
         verbose_name = 'Lesson'
         # verbose_name_plural = verbose_name
 
+    def get_lesson_video(self):
+        """
+        获取章节视频
+        :return:
+        """
+        return self.video_set.all()
+
+    def __str__(self):
+        return self.name
+
 
 class Video(models.Model):
     """
@@ -104,12 +124,17 @@ class Video(models.Model):
     lesson = models.ForeignKey(Lesson, verbose_name='lesson', on_delete=models.CASCADE)
     # 视频名
     name = models.CharField(max_length=100, verbose_name='video name')
+    url = models.CharField(max_length=200, verbose_name='visit address', default='')
+    duration = models.IntegerField(default=0, verbose_name='time (minutes)')
     # 添加时间
     add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
 
     class Meta:
         verbose_name = 'Video'
         # verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
 
 
 class CourseResource(models.Model):
@@ -136,3 +161,6 @@ class CourseResource(models.Model):
     class Meta:
         verbose_name = 'Course Resource'
         # verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
