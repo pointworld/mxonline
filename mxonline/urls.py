@@ -19,7 +19,6 @@ from django.urls import path, include, re_path
 from django.views.static import serve
 
 from mxonline.settings import MEDIA_ROOT
-from organization.views import OrgView
 from users.views import index, LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetPwdView, ModifyPwdView
 
 urlpatterns = [
@@ -46,6 +45,9 @@ urlpatterns = [
 
     # 课程机构 url 配置
     path('org/', include('organization.urls', namespace='org')),
+
+    # 课程相关 url 配置
+    path('course/', include('courses.urls', namespace='course')),
 
     # 上传文件的访问处理
     re_path('media/(?P<path>.*)', serve, {'document_root': MEDIA_ROOT}),
