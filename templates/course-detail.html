@@ -57,7 +57,7 @@
                             </ul>
                             <div class="btns">
                                 <div class="btn colectgroupbtn" id="jsLeftBtn">
-                                    收藏
+                                    {% if has_fav_course %}已收藏{% else %}收藏{% endif %}
                                 </div>
                                 <div class="buy btn"><a style="color: white" href="course-video.html">开始学习</a></div>
                             </div>
@@ -93,7 +93,7 @@
                         </a>
                         <div class="btn  notlogin
 					     " data-favid="14" id="jsRightBtn">
-                            已收藏
+                            {% if has_fav_org %}已收藏{% else %}收藏{% endif %}
                         </div>
                         <div class="clear">
                             <ul>
@@ -161,3 +161,40 @@
     </section>
 {% endblock %}
 
+{% block js %}
+    <script>
+        //收藏分享
+        function add_fav(current_elem, fav_id, fav_type){
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url:"{% url "org:add_fav" %}",
+                data:{'fav_id':fav_id, 'fav_type':fav_type},
+                async: true,
+                beforeSend:function(xhr, settings){
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function(data) {
+                    if(data.status == 'fail'){
+                        if(data.msg == '用户未登录'){
+                            window.location.href="{% url 'login' %}?next={{ request.path }}";
+                        }else{
+                            alert(data.msg)
+                        }
+
+                    }else if(data.status == 'success'){
+                        current_elem.text(data.msg)
+                    }
+                },
+            });
+        }
+
+        $('#jsLeftBtn').on('click', function(){
+            add_fav($(this), {{ course.id }}, 1);
+        });
+
+        $('#jsRightBtn').on('click', function(){
+            add_fav($(this), {{ course.course_org.id }}, 2);
+        });
+    </script>
+{% endblock %}

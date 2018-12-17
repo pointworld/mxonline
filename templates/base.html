@@ -12,7 +12,6 @@
     {% block css %}{% endblock %}
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/jquery-migrate-1.2.1.min.js' %}"></script>
-    {% block js %}{% endblock %}
 </head>
 <body>
 <section class="headerwrap ">
@@ -126,5 +125,6 @@
 <script src="{% static 'js/plugins/jquery.scrollLoading.js' %}"></script>
 <script src="{% static 'js/deco-common.js' %}"></script>
 
+{% block js %}{% endblock %}
 </body>
 </html>

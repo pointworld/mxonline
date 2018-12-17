@@ -6,6 +6,7 @@ from django.views.generic.base import View
 
 from pure_pagination import Paginator, PageNotAnInteger
 
+from operation.models import UserFavorite
 from .models import Course
 
 
@@ -61,6 +62,15 @@ class CourseDetailView(View):
         course.hit_nums += 1
         course.save()
 
+        has_fav_course = False
+        has_fav_org = False
+
+        if request.user.is_authenticated:
+            if UserFavorite.objects.filter(user=request.user, fav_id=course.id, fav_type=1):
+                has_fav_course = True
+            if UserFavorite.objects.filter(user=request.user, fav_id=course.course_org.id, fav_type=2):
+                has_fav_org = True
+
         tag = course.tag
 
         if tag:
@@ -71,4 +81,6 @@ class CourseDetailView(View):
         return render(request, 'course-detail.html', {
             'course': course,
             'related_courses': related_courses,
+            'has_fav_course': has_fav_course,
+            'has_fav_org': has_fav_org,
         })
