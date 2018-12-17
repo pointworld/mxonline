@@ -9,6 +9,7 @@ from pure_pagination import Paginator, PageNotAnInteger
 from .models import CourseOrg, CityDict
 from .forms import UserConsultingForm
 from courses.models import Course
+from operation.models import UserFavorite
 
 
 # Create your views here.
@@ -104,6 +105,12 @@ class OrgHomeView(View):
         current_page = 'home'
         # 根据 id 取到课程机构
         course_org = CourseOrg.objects.get(id=int(org_id))
+
+        has_fav = False
+        if request.user.is_authenticated:
+            if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
+                has_fav = True
+
         # 通过课程机构找到课程。内建的变量，找到指向这个字段的外键引用
         all_courses = course_org.course_set.all()[:3]
         all_teachers = course_org.teacher_set.all()[:1]
@@ -112,6 +119,7 @@ class OrgHomeView(View):
             'all_teachers': all_teachers,
             'course_org': course_org,
             'current_page': current_page,
+            'has_fav': has_fav,
         })
 
 
@@ -124,12 +132,19 @@ class OrgCourseView(View):
         current_page = 'course'
         # 根据 id 取到课程机构
         course_org = CourseOrg.objects.get(id=int(org_id))
+
+        has_fav = False
+        if request.user.is_authenticated:
+            if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=1):
+                has_fav = True
+
         # 通过课程机构找到课程。内建的变量，找到指向这个字段的外键引用
         all_courses = course_org.course_set.all()
         return render(request, 'org-detail-course.html', {
             'all_courses': all_courses,
             'course_org': course_org,
             'current_page': current_page,
+            'has_fav': has_fav,
         })
 
 
@@ -142,9 +157,16 @@ class OrgDescView(View):
         current_page = 'desc'
         # 根据 id 取到课程机构
         course_org = CourseOrg.objects.get(id=int(org_id))
+
+        has_fav = False
+        if request.user.is_authenticated:
+            if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
+                has_fav = True
+
         return render(request, 'org-detail-desc.html', {
             'course_org': course_org,
             'current_page': current_page,
+            'has_fav': has_fav,
         })
 
 
@@ -157,9 +179,49 @@ class OrgTeacherView(View):
         current_page = 'teacher'
         # 根据 id 取到课程机构
         course_org = CourseOrg.objects.get(id=int(org_id))
+
+        has_fav = False
+        if request.user.is_authenticated:
+            if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=3):
+                has_fav = True
+
         all_teachers = course_org.teacher_set.all()
         return render(request, 'org-detail-teachers.html', {
             'all_teachers': all_teachers,
             'course_org': course_org,
             'current_page': current_page,
+            'has_fav': has_fav,
         })
+
+
+class AddFavView(View):
+    """
+    用户收藏和取消收藏
+    """
+
+    def post(self, request):
+        # 收藏的课程，讲师，机构的 id
+        # 默认值取 0 是因为空串转 int 会报错
+        fav_id = request.POST.get('fav_id', 0)
+        fav_type = request.POST.get('fav_type', 0)
+
+        # 判断用户的登录状态：即使没有登录也会有一个匿名的 user
+        if not request.user.is_authenticated:
+            return HttpResponse('{"status": "fail", "msg": "用户未登录"}', content_type='application/json')
+
+        exist_records = UserFavorite.objects.filter(user=request.user, fav_id=int(fav_id), fav_type=int(fav_type))
+        if exist_records:
+            # 如果记录已经存在，则表示用户取消收藏
+            exist_records.delete()
+            return HttpResponse('{"status": "success", "msg": "收藏"}', content_type='application/json')
+        else:
+            user_fav = UserFavorite()
+            if int(fav_id) > 0 and int(fav_type) > 0:
+                user_fav.user = request.user
+                user_fav.fav_id = int(fav_id)
+                user_fav.fav_type = int(fav_type)
+                user_fav.save()
+                return HttpResponse('{"status": "success", "msg": "已收藏"}', content_type='application/json')
+            else:
+                return HttpResponse('{"status": "fail", "msg": "收藏出错"}', content_type='application/json')
+

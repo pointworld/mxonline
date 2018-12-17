@@ -72,8 +72,9 @@ class UserFavorite(models.Model):
         (3, 'teacher'),
     )
 
-    # 用户 id
-    user_id = models.IntegerField(default=0)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name='user', default='')
+    #  id 与 fav_type 的值相对应
+    fav_id = models.IntegerField(default=0, verbose_name='favorite type id')
     # 收藏类型
     fav_type = models.IntegerField(
         choices=TYPE_CHOICES,
@@ -91,7 +92,7 @@ class UserFavorite(models.Model):
 
     def __str__(self):
         return 'user({0}) has a collection to {1}'.format(
-            self.user_id,
+            self.fav_id,
             self.fav_type
         )
 

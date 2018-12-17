@@ -31,9 +31,9 @@ class CourseCommentsAdmin(admin.ModelAdmin):
 
 
 class UserFavoriteAdmin(admin.ModelAdmin):
-    list_display = ['user_id', 'fav_type', 'add_time']
-    list_filter = ['user_id', 'fav_type', 'add_time']
-    search_fields = ['user_id', 'fav_type']
+    list_display = ['fav_id', 'fav_type', 'add_time']
+    list_filter = ['fav_id', 'fav_type', 'add_time']
+    search_fields = ['fav_id', 'fav_type']
 
 
 admin.site.register(UserConsulting, UserConsultingAdmin)
