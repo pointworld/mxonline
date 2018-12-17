@@ -61,8 +61,8 @@
                     <div class="content">
                         <div class="mod-tab-menu">
                             <ul class="course-menu clearfix">
-                                <li><a class="ui-tabs-active active" id="learnOn"  href="course-video.html"><span>章节</span></a></li>
-                                <li><a id="commentOn" class="" href="course-comment.html"><span>评论</span></a></li>
+                                <li><a class="ui-tabs-active active" id="learnOn"  href="{% url 'course:course_info' course.id %}"><span>章节</span></a></li>
+                                <li><a id="commentOn" class="" href="{% url 'course:course_comment' course.id %}"><span>评论</span></a></li>
                             </ul>
                         </div>
                         <div id="notice" class="clearfix">
@@ -141,9 +141,9 @@
                                     </dl>
                                 </div>
                             </div>
-
-
-                            <div class="cp-other-learned  js-comp-tabs">
+                            <div
+                                class="cp-other-learned
+                                js-comp-tabs">
                                 <div class="cp-header clearfix">
                                     <h2 class="cp-tit l">该课的同学还学过</h2>
                                 </div>
@@ -201,8 +201,8 @@
                                     </div>
                                 </div>
                             </div>
-
-                        </div>    </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="clear"></div>
 
