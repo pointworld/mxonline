@@ -257,3 +257,31 @@ class TeacherListView(View):
             'sorted_teacher': sorted_teacher,
             'sort': sort,
         })
+
+
+class TeacherDetailView(View):
+    """
+    讲师详情
+    """
+    def get(self, request, teacher_id):
+        teacher = Teacher.objects.get(id=int(teacher_id))
+        all_courses = Course.objects.filter(teacher=teacher)
+
+        has_teacher_faved = False
+        if UserFavorite.objects.filter(user=request.user, fav_type=3, fav_id=teacher_id):
+            has_teacher_faved = True
+
+        has_org_faved = False
+        if UserFavorite.objects.filter(user=request.user, fav_type=2, fav_id=teacher.org.id):
+            has_org_faved = True
+
+        # 讲师排行
+        sorted_teacher = Teacher.objects.all().order_by('-hit_nums')[:3]
+
+        return render(request, 'teacher-detail.html', {
+            'teacher': teacher,
+            'all_courses': all_courses,
+            'sorted_teacher': sorted_teacher,
+            'has_teacher_faved': has_teacher_faved,
+            'has_org_faved': has_org_faved,
+        })

@@ -6,7 +6,7 @@ __date__ = '2018-12-17'
 
 from django.urls import path, re_path
 
-from .views import OrgView, AddUserConsultingView, OrgHomeView, OrgCourseView, OrgDescView, OrgTeacherView, AddFavView, TeacherListView
+from .views import OrgView, AddUserConsultingView, OrgHomeView, OrgCourseView, OrgDescView, OrgTeacherView, AddFavView, TeacherListView, TeacherDetailView
 
 
 app_name = 'organization'
@@ -26,4 +26,6 @@ urlpatterns = [
 
     # 讲师列表
     path('teacher/list/', TeacherListView.as_view(), name='teacher_list'),
+    # 讲师详情
+    re_path('teacher/detail/(?P<teacher_id>\d+)/', TeacherDetailView.as_view(), name='teacher_detail'),
 ]
