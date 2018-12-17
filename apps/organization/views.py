@@ -3,6 +3,7 @@
 from django.shortcuts import render
 from django.views.generic.base import View
 from django.http import HttpResponse
+from django.db.models import Q
 
 from pure_pagination import Paginator, PageNotAnInteger
 
@@ -29,6 +30,14 @@ class OrgView(View):
 
         # 城市
         all_cities = CityDict.objects.all()
+
+        # 搜索
+        search_keywords = request.GET.get('keywords', '')
+        if search_keywords:
+            all_orgs = all_orgs.filter(
+                Q(name__icontains=search_keywords)
+                | Q(desc__icontains=search_keywords)
+            )
 
         # 城市筛选
         city_id = request.GET.get('city', '')
@@ -232,6 +241,15 @@ class TeacherListView(View):
     """
     def get(self, request):
         all_teachers = Teacher.objects.all()
+
+        # 搜索
+        search_keywords = request.GET.get('keywords', '')
+        if search_keywords:
+            all_teachers = all_teachers.filter(
+                Q(name__icontains=search_keywords)
+                | Q(post__icontains=search_keywords)
+                | Q(company__icontains=search_keywords)
+            )
 
         # 排序
         sort = request.GET.get('sort', '')
