@@ -1,10 +1,13 @@
 # _*_ coding:utf8 _*_
+
 from django.shortcuts import render
 from django.views.generic.base import View
+from django.http import HttpResponse
 
-from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
+from pure_pagination import Paginator, PageNotAnInteger
 
 from .models import CourseOrg, CityDict
+from .forms import UserConsultingForm
 
 
 # Create your views here.
@@ -66,3 +69,27 @@ class OrgView(View):
             'hot_orgs': hot_orgs,
             'sort': sort,
         })
+
+
+class AddUserConsultingView(View):
+    """
+    用户添加咨询
+    """
+
+    def post(self, request):
+        user_consulting_form = UserConsultingForm(request.POST)
+        if user_consulting_form.is_valid():
+            # modelform 和 form 的区别
+            # modelform 有 model 的属性
+            # 当 commit 为 true 进行真正保存
+            # 这样就不需要把每个字段都取出来然后存到 model 的对象中之后 save
+            user_consulting = user_consulting_form.save(commit=True)
+            # 表单验证通过，返回 json 字符串，异步不刷新
+            return HttpResponse('{"status": "success"}', content_type='application/json')
+        else:
+            # 表单验证不通过，返回 json 字符串，并将 form 的报错信息通过 msg 传递到前端
+            return HttpResponse(
+                '{"status": "fail", "msg": "添加出错"}',
+                content_type='application/json'
+            )
+

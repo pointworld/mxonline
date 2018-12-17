@@ -44,8 +44,8 @@ urlpatterns = [
     # 修改密码
     path('modify_pwd/', ModifyPwdView.as_view(), name='modify_psd'),
 
-    # 课程机构首页
-    path('org_list/', OrgView.as_view(), name='org_list'),
+    # 课程机构 url 配置
+    path('org/', include('organization.urls', namespace='org')),
 
     # 上传文件的访问处理
     re_path('media/(?P<path>.*)', serve, {'document_root': MEDIA_ROOT}),
