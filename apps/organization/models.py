@@ -86,7 +86,7 @@ class Teacher(models.Model):
 
     org = models.ForeignKey(CourseOrg, verbose_name='organization', on_delete=models.CASCADE)
     name = models.CharField(max_length=20, verbose_name='name')
-    # age = models.IntegerField(default=0, verbose_name='age')
+    age = models.IntegerField(default=18, verbose_name='age')
     gender = models.CharField(max_length=10, default='male', choices=GENDER_CHOICES)
     work_years = models.IntegerField(default=0, verbose_name='years of working')
     company = models.CharField(max_length=50, verbose_name='company')

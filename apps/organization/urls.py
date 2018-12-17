@@ -6,7 +6,7 @@ __date__ = '2018-12-17'
 
 from django.urls import path, re_path
 
-from .views import OrgView, AddUserConsultingView, OrgHomeView, OrgCourseView, OrgDescView, OrgTeacherView, AddFavView
+from .views import OrgView, AddUserConsultingView, OrgHomeView, OrgCourseView, OrgDescView, OrgTeacherView, AddFavView, TeacherListView
 
 
 app_name = 'organization'
@@ -21,4 +21,9 @@ urlpatterns = [
     re_path('teacher/(?P<org_id>\d+)/', OrgTeacherView.as_view(), name='org_teacher'),
     # 机构收藏
     path('add_fav/', AddFavView.as_view(), name='add_fav'),
+
+    # 讲师相关 url 配置
+
+    # 讲师列表
+    path('teacher/list/', TeacherListView.as_view(), name='teacher_list'),
 ]
