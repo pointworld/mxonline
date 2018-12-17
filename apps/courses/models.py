@@ -5,6 +5,7 @@ from django.db import models
 
 from organization.models import CourseOrg
 
+
 # Create your models here.
 
 class Course(models.Model):
@@ -49,12 +50,25 @@ class Course(models.Model):
     )
     # 课程点击数
     hit_nums = models.IntegerField(default=0, verbose_name='number of hits')
+    # 课程类别
+    category = models.CharField(max_length=20, verbose_name='course category', default='backend')
+    tag = models.CharField(default='', verbose_name='course tag', max_length=10)
     # 课程添加时间
     add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
 
     class Meta:
         verbose_name = 'Course'
         # verbose_name_plural = verbose_name
+
+    def get_lesson_nums(self):
+        """
+        获取课程的章节数
+        :return:
+        """
+        return self.lesson_set.all().count()
+
+    def get_learn_users(self):
+        return self.usercourse_set.all()[:5]
 
     def __str__(self):
         return self.name

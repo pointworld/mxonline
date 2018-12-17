@@ -8,6 +8,7 @@ from pure_pagination import Paginator, PageNotAnInteger
 
 from .models import Course
 
+
 # Create your views here.
 
 
@@ -28,7 +29,7 @@ class CourseListView(View):
             if sort == 'students':
                 all_courses = all_courses.order_by('-student_nums')
             elif sort == 'hot':
-                all_courses = all_courses.order_by('-hit_nums')
+                all_courses = all_courses.order_by('-fav_nums')
 
         # 分页
         try:
@@ -45,4 +46,29 @@ class CourseListView(View):
             'all_courses': courses,
             'sort': sort,
             'hot_courses': hot_courses,
+        })
+
+
+class CourseDetailView(View):
+    """
+    课程详情
+    """
+
+    def get(self, request, course_id):
+        course = Course.objects.get(id=int(course_id))
+
+        # 增加课程点击数
+        course.hit_nums += 1
+        course.save()
+
+        tag = course.tag
+
+        if tag:
+            related_courses = Course.objects.filter(tag=tag)[:1]
+        else:
+            related_courses = []
+
+        return render(request, 'course-detail.html', {
+            'course': course,
+            'related_courses': related_courses,
         })

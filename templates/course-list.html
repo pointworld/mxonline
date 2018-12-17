@@ -24,7 +24,8 @@
                         <ul class="tab_header">
                             <li class="{% if sort == '' %}active{% endif %}"><a href="?sort=">最新 </a></li>
                             <li class="{% if sort == 'hot' %}active{% endif %}"><a href="?sort=hot">最热门</a></li>
-                            <li class="{% if sort == 'students' %}active{% endif %}"><a href="?sort=students">参与人数</a></li>
+                            <li class="{% if sort == 'students' %}active{% endif %}"><a href="?sort=students">参与人数</a>
+                            </li>
                         </ul>
                     </div>
                     <div id="inWindow">
@@ -32,22 +33,23 @@
                             <div class="group_list">
                                 {% for course in all_courses.object_list %}
                                     <div class="box">
-                                        <a href="course-detail.html">
+                                        <a href="{% url 'course:course_detail' course.id %}">
                                             <img
-                                                width="280" height="350"
-                                                class="scrollLoading"
-                                                src="{{ MEDIA_URL }}{{ course.cover }}"
-                                                alt=""/>
+                                                    width="280" height="350"
+                                                    class="scrollLoading"
+                                                    src="{{ MEDIA_URL }}{{ course.cover }}"
+                                                    alt=""/>
                                         </a>
                                         <div class="des">
-                                            <a href="course-detail.html">
+                                            <a href="{% url 'course:course_detail' course.id %}">
                                                 <h2>{{ course.name }}</h2>
                                             </a>
                                             <span class="fl">时长：<i class="key">{{ course.duration }}</i></span>
                                             <span class="fr">学习人数：{{ course.student_nums }}&nbsp;&nbsp;</span>
                                         </div>
                                         <div class="bottom">
-                                            <a href="course-detail.html"><span class="fl">来自{{ course.course_org.name }}</span></a>
+                                            <a href="{% url 'course:course_detail' course.id %}"><span
+                                                    class="fl">来自{{ course.course_org.name }}</span></a>
                                             <span class="star fr  notlogin
                                         " data-favid="15">
                                         {{ course.fav_nums }}
@@ -59,7 +61,8 @@
                             <div class="pageturn">
                                 <ul class="pagelist">
                                     {% if all_courses.has_previous %}
-                                        <li class="long"><a href="?{{ all_courses.previous_page_number.querystring }}">上一页</a></li>
+                                        <li class="long"><a href="?{{ all_courses.previous_page_number.querystring }}">上一页</a>
+                                        </li>
                                     {% endif %}
                                     {% for page in all_courses.pages %}
                                         {% if page %}
@@ -73,7 +76,8 @@
                                         {% endif %}
                                     {% endfor %}
                                     {% if all_courses.has_next %}
-                                        <li class="long"><a href="?{{ all_courses.next_page_number.querystring }}">下一页</a></li>
+                                        <li class="long"><a
+                                                href="?{{ all_courses.next_page_number.querystring }}">下一页</a></li>
                                     {% endif %}
                                 </ul>
                             </div>
@@ -88,9 +92,9 @@
                                 <dt>
                                     <a target="_blank" href="">
                                         <img
-                                            width="240" height="220"
-                                            class="scrollLoading"
-                                            src="{{ MEDIA_URL }}{{ hot_course.cover }}"/>
+                                                width="240" height="220"
+                                                class="scrollLoading"
+                                                src="{{ MEDIA_URL }}{{ hot_course.cover }}"/>
                                     </a>
                                 </dt>
                                 <dd>
