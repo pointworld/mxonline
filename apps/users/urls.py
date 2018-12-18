@@ -6,7 +6,8 @@ __date__ = '2018-12-18'
 
 from django.urls import path, re_path
 
-from users.views import UserInfoView, UserAvatarUploadView, UserUpdatePwdView, SendEmailCodeView, UpdateEmailView, MyCourseView, MyFavOrgView, MyFavTeacherView
+from users.views import UserInfoView, UserAvatarUploadView, UserUpdatePwdView, SendEmailCodeView, UpdateEmailView, \
+    MyCourseView, MyFavOrgView, MyFavTeacherView, MyFavCourseView
 
 app_name = 'users'
 
@@ -27,4 +28,6 @@ urlpatterns = [
     path('my_fav_org/', MyFavOrgView.as_view(), name='my_fav_org'),
     # 我收藏的讲师
     path('my_fav_teacher/', MyFavTeacherView.as_view(), name='my_fav_teacher'),
+    # 我收藏的讲师
+    path('my_fav_course/', MyFavCourseView.as_view(), name='my_fav_course'),
 ]

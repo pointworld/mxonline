@@ -11,6 +11,7 @@ from django.db.models import Q
 from django.views.generic.base import View
 from django.http import HttpResponse
 
+from courses.models import Course
 from operation.models import UserCourse, UserFavorite
 from organization.models import CourseOrg, Teacher
 from utils.mixin_utils import LoginRequiredMixin
@@ -301,6 +302,7 @@ class UpdateEmailView(LoginRequiredMixin, View):
     """
     修改个人邮箱
     """
+
     def post(self, request):
         email = request.POST.get('email', '')
         code = request.POST.get('code', '')
@@ -361,3 +363,18 @@ class MyFavTeacherView(LoginRequiredMixin, View):
         })
 
 
+class MyFavCourseView(LoginRequiredMixin, View):
+    """
+    用户收藏的课程
+    """
+
+    def get(self, request):
+        course_list = []
+        user_fav_courses = UserFavorite.objects.filter(user=request.user, fav_type=1)
+        for fav_course in user_fav_courses:
+            course_id = fav_course.fav_id
+            course = Course.objects.get(id=course_id)
+            course_list.append(course)
+        return render(request, 'usercenter-fav-course.html', {
+            'user_fav_courses': course_list,
+        })
