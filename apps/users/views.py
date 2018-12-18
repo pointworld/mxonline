@@ -2,14 +2,14 @@
 import json
 
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.hashers import make_password
 # Encapsulate filters as objects that can then be combined logically (using
 #     `&` and `|`).
 from django.db.models import Q
 from django.views.generic.base import View
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 from pure_pagination import Paginator, PageNotAnInteger
 
@@ -129,6 +129,16 @@ class LoginView(View):
         # 表单字段无效则跳回 login 页面，减轻对数据库查询的负担
         else:
             return render(request, 'login.html', {'login_form': login_form})
+
+
+class LogoutView(View):
+    """
+    用户退出
+    """
+    def get(self, request):
+        logout(request)
+        from django.urls import reverse
+        return HttpResponseRedirect(reverse('index'))
 
 
 class ActiveUserView(View):

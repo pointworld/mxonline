@@ -30,7 +30,8 @@
                             </dl>
                             <div class="userdetail">
                                 <dl>
-                                    <dt><img width="80" height="80" src="{{ MEDIA_URL }}{{ request.user.avatar }}"/></dt>
+                                    <dt><img width="80" height="80" src="{{ MEDIA_URL }}{{ request.user.avatar }}"/>
+                                    </dt>
                                     <dd>
                                         <h2>{{ request.user.nickname }}</h2>
                                         <p>{{ request.user.username }}</p>
@@ -38,7 +39,7 @@
                                 </dl>
                                 <div class="btn">
                                     <a class="personcenter fl" href="{% url 'users:user_info' %}">进入个人中心</a>
-{#                                    <a class="fr" href="{% url 'logout' %}">退出</a>#}
+                                    <a class="fr" href="{% url 'logout' %}">退出</a>
                                 </div>
                             </div>
                         </div>

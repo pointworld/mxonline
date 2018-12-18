@@ -19,7 +19,7 @@ from django.urls import path, include, re_path
 from django.views.static import serve
 
 from mxonline.settings import MEDIA_ROOT
-from users.views import index, LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetPwdView, ModifyPwdView
+from users.views import index, LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetPwdView, ModifyPwdView, LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +28,8 @@ urlpatterns = [
     path('', index, name='index'),
     # 登录
     path('login/', LoginView.as_view(), name='login'),
+    # 登录
+    path('logout/', LogoutView.as_view(), name='logout'),
     # 注册
     path('register/', RegisterView.as_view(), name='register'),
     # 图片验证码

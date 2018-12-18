@@ -32,7 +32,8 @@
                             </dl>
                             <div class="userdetail">
                                 <dl>
-                                    <dt><img width="80" height="80" src="{{ MEDIA_URL }}{{ request.user.avatar }}"/></dt>
+                                    <dt><img width="80" height="80" src="{{ MEDIA_URL }}{{ request.user.avatar }}"/>
+                                    </dt>
                                     <dd>
                                         <h2>{{ request.user.nickname }}</h2>
                                         <p>{{ request.user.username }}</p>
@@ -40,7 +41,7 @@
                                 </dl>
                                 <div class="btn">
                                     <a class="personcenter fl" href="{% url 'users:user_info' %}">进入个人中心</a>
-                                    {#                                    <a class="fr" href="{% url 'logout' %}">退出</a>#}
+                                    <a class="fr" href="{% url 'logout' %}">退出</a>
                                 </div>
                             </div>
                         </div>
@@ -100,10 +101,14 @@
     <div class="wp list personal_list comp">
         <div class="left">
             <ul>
-                <li class="{% ifequal current_page 'home' %}active2{% endifequal %}"><a href="{% url 'org:org_home' course_org.id %}">机构首页</a></li>
-                <li class="{% ifequal current_page 'course' %}active2{% endifequal %}"><a href="{% url 'org:org_course' course_org.id %}">机构课程</a></li>
-                <li class="{% ifequal current_page 'desc' %}active2{% endifequal %}"><a href="{% url 'org:org_desc' course_org.id %}">机构介绍</a></li>
-                <li class="{% ifequal current_page 'teacher' %}active2{% endifequal %}"><a href="{% url 'org:org_teacher' course_org.id %}">机构讲师</a></li>
+                <li class="{% ifequal current_page 'home' %}active2{% endifequal %}"><a
+                        href="{% url 'org:org_home' course_org.id %}">机构首页</a></li>
+                <li class="{% ifequal current_page 'course' %}active2{% endifequal %}"><a
+                        href="{% url 'org:org_course' course_org.id %}">机构课程</a></li>
+                <li class="{% ifequal current_page 'desc' %}active2{% endifequal %}"><a
+                        href="{% url 'org:org_desc' course_org.id %}">机构介绍</a></li>
+                <li class="{% ifequal current_page 'teacher' %}active2{% endifequal %}"><a
+                        href="{% url 'org:org_teacher' course_org.id %}">机构讲师</a></li>
             </ul>
         </div>
         {% block right_form %}{% endblock %}
