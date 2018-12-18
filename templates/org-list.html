@@ -82,28 +82,27 @@
                                         <a href="{% url 'org:org_home' org.id %}">
                                             <h1>北京大学</h1>
                                             <div class="pic fl">
-
                                                 <img src="{% static 'images/authentication.png' %}"/>
-
                                                 <img src="{% static 'images/gold.png' %}"/>
-
                                             </div>
                                         </a>
                                     </div>
                                     <ul class="cont">
-                                        <li class="first"><p class="pic9">课程数：<span>1</span></p>
-                                            <p class="c7">学习人数：<span>1000</span></p></li>
-                                        <li class="c8" style="padding-left:18px;">北京市海淀区中关村北大街</li>
+                                        <li class="first"><p class="pic9">课程数：<span>{{ org.course_nums }}</span></p>
+                                            <p class="c7">学习人数：<span>{{ org.learners }}</span></p></li>
+                                        <li class="c8" style="padding-left:18px;">{{ org.address }}</li>
                                         <li class="pic10" style="padding-left:18px;">经典课程：
-
-                                            <a href="/diary/19/">c语言基础入门</a>
-
-                                            <a href="/diary/16/">数据库基础</a>
-
+                                            {% for course in org.course_set.get_queryset %}
+                                                <a href="{% url 'course:course_detail' course.id %}">{{ course.name }}</a>
+                                            {% endfor %}
                                         </li>
                                     </ul>
                                 </dd>
-                                <div class="buy start_groupbuy jsShowPerfect2" data-id="22"><br/>联系<br/>服务</div>
+                                <div class="buy start_groupbuy jsShowPerfect2" data-id="22">
+                                    <a href="{% url 'org:org_home' org.id %}">
+                                        <br/>联系<br/>服务
+                                    </a>
+                                </div>
                             </dl>
                         {% endfor %}
                     </div>
