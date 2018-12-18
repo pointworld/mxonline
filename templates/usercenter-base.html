@@ -47,9 +47,9 @@
                                 </div>
                             </div>
                         </div>
-                        {#                        <a href="{% url 'users:my_message' %}">#}
-                        {#                            <div class="msg-num"><span id="MsgNum">{{ request.user.unread_nums }}</span></div>#}
-                        {#                        </a>#}
+                        <a href="{% url 'users:my_message' %}">
+                            <div class="msg-num"><span id="MsgNum">{{ request.user.get_unread_nums }}</span></div>
+                        </a>
                     </div>
                 {% else %}
                     <div class="wp">
@@ -92,7 +92,7 @@
                 <li><a href="{% url 'users:my_course' %}">我的课程</a></li>
                 <li><a href="{% url 'users:my_fav_org' %}">我的收藏</a></li>
                 <li>
-                    <a href="usercenter-message.html" style="position: relative;">
+                    <a href="{% url 'users:my_message' %}" style="position: relative;">
                         我的消息
                     </a>
                 </li>

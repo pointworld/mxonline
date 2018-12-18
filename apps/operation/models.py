@@ -125,6 +125,9 @@ class UserMessage(models.Model):
         verbose_name = 'user message'
         verbose_name_plural = verbose_name
 
+    def __str__(self):
+        return 'user({0}) received {1} '.format(self.receiver, self.message)
+
 
 class UserCourse(models.Model):
     """

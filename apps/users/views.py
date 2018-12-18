@@ -11,8 +11,10 @@ from django.db.models import Q
 from django.views.generic.base import View
 from django.http import HttpResponse
 
+from pure_pagination import Paginator, PageNotAnInteger
+
 from courses.models import Course
-from operation.models import UserCourse, UserFavorite
+from operation.models import UserCourse, UserFavorite, UserMessage
 from organization.models import CourseOrg, Teacher
 from utils.mixin_utils import LoginRequiredMixin
 from .models import UserProfile, EmailAuthCode
@@ -71,6 +73,11 @@ class RegisterView(View):
             user_profile.is_active = False
             # 发送注册邮件之前先保存到数据库，到时候查询链接是否存在
             user_profile.save()
+
+            # 写入欢迎注册消息
+            user_message = UserMessage()
+            user_message.user = user_profile.id
+            user_message.message = 'Welcome register GMOOC.'
 
             # 发送注册激活邮件
             send_register_or_forget_email(username, 'register')
@@ -377,4 +384,28 @@ class MyFavCourseView(LoginRequiredMixin, View):
             course_list.append(course)
         return render(request, 'usercenter-fav-course.html', {
             'user_fav_courses': course_list,
+        })
+
+
+class MyMessageView(LoginRequiredMixin, View):
+    """
+    用户的消息
+    """
+
+    def get(self, request):
+        all_messages = UserMessage.objects.filter(receiver=request.user.id)
+
+        # 分页
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+
+        # Provide Paginator with the request object for complete querystring generation
+        p = Paginator(all_messages, 2, request=request)
+
+        messages = p.page(page)
+
+        return render(request, 'usercenter-message.html', {
+            'messages': messages,
         })

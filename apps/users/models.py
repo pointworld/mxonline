@@ -48,6 +48,14 @@ class UserProfile(AbstractUser):
         verbose_name = 'User Info'
         # verbose_name_plural = verbose_name
 
+    def get_unread_nums(self):
+        """
+        获取用户未读消息的数量
+        :return:
+        """
+        from operation.models import UserMessage
+        return UserMessage.objects.filter(receiver=self.id).count()
+
     # 重载 __str__ 方法，打印实例时会打印 username，username 继承自 AbstractUser
     def __str__(self):
         return self.username

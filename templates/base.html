@@ -42,9 +42,9 @@
                                 </div>
                             </div>
                         </div>
-{#                        <a href="{% url 'users:my_message' %}">#}
-{#                            <div class="msg-num"><span id="MsgNum">{{ request.user.unread_nums }}</span></div>#}
-{#                        </a>#}
+                        <a href="{% url 'users:my_message' %}">
+                            <div class="msg-num"><span id="MsgNum">{{ request.user.get_unread_nums }}</span></div>
+                        </a>
                     </div>
                 {% else %}
                     <div class="wp">
