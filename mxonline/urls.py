@@ -18,7 +18,7 @@ from django.urls import path, include, re_path
 # Serve static files below a given point in the directory structure
 from django.views.static import serve
 
-from mxonline.settings import MEDIA_ROOT
+from mxonline.settings import MEDIA_ROOT, STATIC_ROOT
 from users.views import IndexView, LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetPwdView, ModifyPwdView, LogoutView
 
 urlpatterns = [
@@ -56,4 +56,13 @@ urlpatterns = [
 
     # 上传文件的访问处理
     re_path('media/(?P<path>.*)', serve, {'document_root': MEDIA_ROOT}),
+
+    # 上传文件的访问处理
+    re_path('static/(?P<path>.*)', serve, {'document_root': STATIC_ROOT}),
 ]
+
+# 全局 404 页面配置
+handler404 = 'users.views.page_not_found'
+
+# 全局 500 页面配置
+handler500 = 'users.views.page_error'

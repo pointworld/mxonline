@@ -25,9 +25,9 @@ sys.path.insert(0, APPS_BASE_DIR)
 SECRET_KEY = '^$u=oo2&q6l-r0^$fj5rvk^me7cx)83x_8%2d$%k@uyqo31*^5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -143,9 +143,9 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 # 指明静态文件放在哪个目录
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static'),
+# )
 
 # 发送邮件的相关配置
 
@@ -160,3 +160,5 @@ EMAIL_FROM = 'youremail@sina.com'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
