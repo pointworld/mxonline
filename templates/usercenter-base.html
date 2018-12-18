@@ -228,6 +228,7 @@
         <div class="close jsCloseDialog"><img src="{% static 'images/dig_close.png' %}"/></div>
         <p>请输入新的邮箱地址</p>
         <form id="jsChangeEmailForm" autocomplete="off">
+            {% csrf_token %}
             <div class="box">
                 <input class="fl change_email" name="email" id="jsChangeEmail" type="text" placeholder="输入重新绑定的邮箱地址">
             </div>

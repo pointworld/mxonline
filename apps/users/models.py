@@ -61,7 +61,8 @@ class EmailAuthCode(models.Model):
 
     SEND_CHOICES = (
         ('register', 'register'),
-        ('forget', 'retrieve password')
+        ('forget', 'retrieve password'),
+        ('update_email', 'update email'),
     )
     # 验证码
     code = models.CharField(max_length=20, verbose_name='auth code')
@@ -69,7 +70,7 @@ class EmailAuthCode(models.Model):
     email = models.EmailField(max_length=50, verbose_name='email')
     # 发送类型（注册、找回密码）
     send_type = models.CharField(
-        max_length=10,
+        max_length=20,
         choices=SEND_CHOICES,
         verbose_name='auth code type',
     )
