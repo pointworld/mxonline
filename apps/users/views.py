@@ -12,7 +12,7 @@ from django.views.generic.base import View
 from django.http import HttpResponse
 
 from operation.models import UserCourse, UserFavorite
-from organization.models import CourseOrg
+from organization.models import CourseOrg, Teacher
 from utils.mixin_utils import LoginRequiredMixin
 from .models import UserProfile, EmailAuthCode
 from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm, UserAvatarUploadForm, UserInfoForm
@@ -334,7 +334,7 @@ class MyFavOrgView(LoginRequiredMixin, View):
 
     def get(self, request):
         org_list = []
-        user_fav_orgs = UserFavorite.objects.filter(user=request.user)
+        user_fav_orgs = UserFavorite.objects.filter(user=request.user, fav_type=2)
         for fav_org in user_fav_orgs:
             org_id = fav_org.fav_id
             org = CourseOrg.objects.get(id=org_id)
@@ -342,3 +342,22 @@ class MyFavOrgView(LoginRequiredMixin, View):
         return render(request, 'usercenter-fav-org.html', {
             'user_fav_orgs': org_list,
         })
+
+
+class MyFavTeacherView(LoginRequiredMixin, View):
+    """
+    用户收藏的讲师
+    """
+
+    def get(self, request):
+        teahcer_list = []
+        user_fav_teachers = UserFavorite.objects.filter(user=request.user, fav_type=3)
+        for fav_teacher in user_fav_teachers:
+            teacher_id = fav_teacher.fav_id
+            teacher = Teacher.objects.get(id=teacher_id)
+            teahcer_list.append(teacher)
+        return render(request, 'usercenter-fav-teacher.html', {
+            'user_fav_teachers': teahcer_list,
+        })
+
+

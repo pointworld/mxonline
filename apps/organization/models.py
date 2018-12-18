@@ -106,5 +106,8 @@ class Teacher(models.Model):
     class Meta:
         verbose_name = 'teacher'
 
+    def get_course_nums(self):
+        return self.course_set.all().count()
+
     def __str__(self):
         return self.name
