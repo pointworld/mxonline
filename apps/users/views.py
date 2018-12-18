@@ -1,4 +1,5 @@
 # _*_ coding: utf8 _*_
+import json
 
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
@@ -245,3 +246,26 @@ class UserAvatarUploadView(LoginRequiredMixin, View):
             return HttpResponse('{"status": "success"}', content_type='application/json')
         else:
             return HttpResponse('{"status": "fail"}', content_type='application/json')
+
+
+class UserUpdatePwdView(View):
+    """
+    用户在个人中心修改密码
+    """
+
+    def post(self, request):
+        modify_form = ModifyPwdForm(request.POST)
+        if modify_form.is_valid():
+            pwd1 = request.POST.get('password1', '')
+            pwd2 = request.POST.get('password2', '')
+            if pwd1 != pwd2:
+                return HttpResponse('{"status": "fail", "msg": "密码不一致"}', content_type='application/json')
+            user = request.user
+            # 加密成密文
+            user.password = make_password(pwd2)
+            # 保存到数据库
+            user.save()
+
+            return HttpResponse('{"status": "success"}', content_type='application/json')
+        else:
+            return HttpResponse(json.dumps(modify_form.errors), content_type='application/json')
