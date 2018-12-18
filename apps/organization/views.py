@@ -115,6 +115,10 @@ class OrgHomeView(View):
         # 根据 id 取到课程机构
         course_org = CourseOrg.objects.get(id=int(org_id))
 
+        # 点击数加一
+        course_org.hit_nums += 1
+        course_org.save()
+
         has_fav = False
         if request.user.is_authenticated:
             if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
@@ -284,6 +288,10 @@ class TeacherDetailView(View):
     def get(self, request, teacher_id):
         teacher = Teacher.objects.get(id=int(teacher_id))
         all_courses = Course.objects.filter(teacher=teacher)
+
+        # 点击数加一
+        teacher.hit_nums += 1
+        teacher.save()
 
         has_teacher_faved = False
         if UserFavorite.objects.filter(user=request.user, fav_type=3, fav_id=teacher_id):
