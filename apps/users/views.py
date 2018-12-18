@@ -11,6 +11,7 @@ from django.db.models import Q
 from django.views.generic.base import View
 from django.http import HttpResponse
 
+from operation.models import UserCourse
 from utils.mixin_utils import LoginRequiredMixin
 from .models import UserProfile, EmailAuthCode
 from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm, UserAvatarUploadForm, UserInfoForm
@@ -311,3 +312,15 @@ class UpdateEmailView(LoginRequiredMixin, View):
             return HttpResponse('{"status": "success"}', content_type='application/json')
         else:
             return HttpResponse('{"email": "验证码出错"}', content_type='application/json')
+
+
+class MyCourseView(LoginRequiredMixin, View):
+    """
+    我的课程
+    """
+
+    def get(self, request):
+        user_courses = UserCourse.objects.filter(user=request.user)
+        return render(request, 'usercenter-mycourse.html', {
+            'user_courses': user_courses,
+        })
