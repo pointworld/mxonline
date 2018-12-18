@@ -28,7 +28,7 @@ urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     # 登录
     path('login/', LoginView.as_view(), name='login'),
-    # 登录
+    # 退出
     path('logout/', LogoutView.as_view(), name='logout'),
     # 注册
     path('register/', RegisterView.as_view(), name='register'),

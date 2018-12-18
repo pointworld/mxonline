@@ -6,18 +6,18 @@
     <div class="right companycenter layout grouping">
         <div class="head">
             <h1>全部课程</h1>
-            <a class="green fr more" href="org-detail-course.html">查看更多 > </a>
+            <a class="green fr more" href="{% url 'course:course_list' %}">查看更多 > </a>
         </div>
         <div class="brief group_list">
             {% for course in all_courses %}
                 <div class="module1_5 box">
-                    <a href="course-detail.html">
+                    <a href="{% url 'course:course_detail' course.id %}">
                         <img
                             width="214"
                             src="{{ MEDIA_URL }}{{ course.cover }}"/>
                     </a>
                     <div class="des">
-                        <a href="course-detail.html"><h2>{{ course.name }}</h2></a>
+                        <a href="{% url 'course:course_detail' course.id %}"><h2>{{ course.name }}</h2></a>
                         <span class="fl">课时：<i class="key">{{ course.duration }}</i></span>
                         <span class="fr">参加人数：{{ course.student_nums }}</span>
                     </div>
@@ -35,7 +35,7 @@
     <div class="right companycenter layout">
         <div class="head">
             <h1>机构教师</h1>
-            <a class="green fr more" href="org-detail-teachers.html">查看更多 > </a>
+            <a class="green fr more" href="{% url 'org:teacher_list' %}">查看更多 > </a>
         </div>
         {% for teacher in all_teachers %}
             <div class="diarys">
@@ -60,11 +60,10 @@
     <div class="right companycenter layout">
         <div class="head">
             <h1>机构介绍</h1>
-            <a class="green fr more" href="org-detail-desc.html">查看更多 > </a>
+            <a class="green fr more" href="{% url 'org:org_home' course_org.id %}">查看更多 > </a>
         </div>
         <div class="cont">&nbsp; &nbsp;
             {{ course_org.desc }}
-            <a href="/company/desc/22/"><span class="green">[查看更多]</span></a>
         </div>
     </div>
 {% endblock %}

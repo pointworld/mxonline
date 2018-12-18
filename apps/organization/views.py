@@ -330,11 +330,11 @@ class TeacherDetailView(View):
         teacher.save()
 
         has_teacher_faved = False
-        if UserFavorite.objects.filter(user=request.user, fav_type=3, fav_id=teacher_id):
+        if UserFavorite.objects.filter(user=request.user.id, fav_type=3, fav_id=int(teacher_id)):
             has_teacher_faved = True
 
         has_org_faved = False
-        if UserFavorite.objects.filter(user=request.user, fav_type=2, fav_id=teacher.org.id):
+        if UserFavorite.objects.filter(user=request.user.id, fav_type=2, fav_id=int(teacher.org.id)):
             has_org_faved = True
 
         # 讲师排行

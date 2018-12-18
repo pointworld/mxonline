@@ -13,7 +13,7 @@
                     <ul class="imgs">
                         {% for slide in all_slides %}
                             <li>
-                                <a href="{{ MEDIA_URL }}{{ slide.url }}">
+                                <a href="{{ slide.url }}">
                                     <img
                                             width="1200"
                                             height="478"
@@ -34,19 +34,19 @@
         <div class="wp">
             <ul class="feature">
                 <li class="feature1">
-                    <img class="pic" src="/static/images/feature1.png" alt=""/>
+                    <img class="pic" src="{% static 'images/feature1.png' %}" alt=""/>
                     <p class="center">专业权威</p>
                 </li>
                 <li class="feature2">
-                    <img class="pic" src="/static/images/feature2.png" alt="">
+                    <img class="pic" src="{% static 'images/feature2.png' %}" alt="">
                     <p class="center">课程最新</p>
                 </li>
                 <li class="feature3">
-                    <img class="pic" src="/static/images/feature3.png" alt=""/>
+                    <img class="pic" src="{% static 'images/feature3.png' %}" alt=""/>
                     <p class="center">名师授课</p>
                 </li>
                 <li class="feature4">
-                    <img class="pic" src="/static/images/feature4.png" alt=""/>
+                    <img class="pic" src="{% static 'images/feature4.png' %}" alt=""/>
                     <p class="center">数据真实</p>
                 </li>
             </ul>
