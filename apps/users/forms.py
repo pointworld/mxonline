@@ -54,3 +54,9 @@ class UserAvatarUploadForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['avatar']
+
+
+class UserInfoForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['nickname', 'birthday', 'gender', 'address', 'mobile']

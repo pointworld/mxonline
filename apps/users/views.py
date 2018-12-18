@@ -13,7 +13,7 @@ from django.http import HttpResponse
 
 from utils.mixin_utils import LoginRequiredMixin
 from .models import UserProfile, EmailAuthCode
-from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm, UserAvatarUploadForm
+from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm, UserAvatarUploadForm, UserInfoForm
 from utils.email_send import send_register_or_forget_email
 
 """
@@ -229,6 +229,14 @@ class UserInfoView(LoginRequiredMixin, View):
         return render(request, 'usercenter-info.html', {
 
         })
+
+    def post(self, request):
+        user_info_form = UserInfoForm(request.POST, instance=request.user)
+        if user_info_form.is_valid():
+            user_info_form.save()
+            return HttpResponse('{"status": "success"}', content_type='application/json')
+        else:
+            return HttpResponse(json.dumps(user_info_form.errors), content_type='application/json')
 
 
 class UserAvatarUploadView(LoginRequiredMixin, View):

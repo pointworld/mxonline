@@ -127,11 +127,11 @@
                     <form class="perinform" id="jsEditUserForm" autocomplete="off">
                         <ul class="right">
                             <li>昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：
-                                <input type="text" name="nick_name" id="nick_name" value="mtianyan" maxlength="10">
+                                <input type="text" name="nick_name" id="nickname" value="mtianyan" maxlength="10">
                                 <i class="error-tips"></i>
                             </li>
                             <li>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：
-                                <input type="text" id="birth_day" name="birday" value="2018年1月8日" readonly="readonly"/>
+                                <input type="text" id="birth_day" name="birthday" value="2018年1月8日" readonly="readonly"/>
                                 <i class="error-tips"></i>
                             </li>
                             <li>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：
@@ -143,12 +143,12 @@
                             </li>
                             <li class="p_infor_city">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：
                                 <input type="text" name="address" id="address" placeholder="请输入你的地址" value="西安"
-                                       maxlength="10">
+                                       maxlength="11">
                                 <i class="error-tips"></i>
                             </li>
                             <li>手&nbsp;&nbsp;机&nbsp;&nbsp;号：
                                 <input type="text" name="mobile" id="mobile" placeholder="请输入你的手机号码" value=""
-                                       maxlength="10">
+                                       maxlength="11">
                             </li>
                             <li>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：
                                 <input class="borderno" type="text" name="email" readonly="readonly"
@@ -285,6 +285,7 @@
         <div class="close jsCloseDialog"><img src="{% static 'images/dig_close.png' %}"/></div>
         <div class="cont">
             <form id="jsFindPwdForm" autocomplete="off">
+                {% csrf_token %}
                 <div class="box">
                     <span class="word2">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</span>
                     <input type="text" id="account" name="account" placeholder="手机/邮箱"/>
@@ -382,8 +383,6 @@
         });
     });
 </script>
-
-
 <script>
     var shareUrl = '',
         shareText = '',

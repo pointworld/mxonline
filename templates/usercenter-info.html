@@ -44,13 +44,14 @@
                     </div>
                 </div>
                 <form class="perinform" id="jsEditUserForm" autocomplete="off">
+                {% csrf_token %}
                     <ul class="right">
                         <li>昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：
-                            <input type="text" name="nick_name" id="nick_name" value="{{ request.user.nickname }}" maxlength="10">
+                            <input type="text" name="nickname" id="nick_name" value="{{ request.user.nickname }}" maxlength="10">
                             <i class="error-tips"></i>
                         </li>
                         <li>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：
-                            <input type="text" id="birth_day" name="birday" value="{{ request.user.birthday }}" readonly="readonly"/>
+                            <input type="text" id="birth_day" name="birthday" value="{{ request.user.birthday }}" readonly="readonly"/>
                             <i class="error-tips"></i>
                         </li>
                         <li>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：
@@ -74,7 +75,7 @@
                             <input type="text" name="mobile" id="mobile"
                                    placeholder="请输入你的手机号码"
                                    value="{{ request.user.mobile|default_if_none:'' }}"
-                                   maxlength="10">
+                                   maxlength="11">
                         </li>
                         <li>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：
                             <input class="borderno" type="text" name="email" readonly="readonly"
