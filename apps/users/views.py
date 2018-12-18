@@ -11,7 +11,8 @@ from django.db.models import Q
 from django.views.generic.base import View
 from django.http import HttpResponse
 
-from operation.models import UserCourse
+from operation.models import UserCourse, UserFavorite
+from organization.models import CourseOrg
 from utils.mixin_utils import LoginRequiredMixin
 from .models import UserProfile, EmailAuthCode
 from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm, UserAvatarUploadForm, UserInfoForm
@@ -323,4 +324,21 @@ class MyCourseView(LoginRequiredMixin, View):
         user_courses = UserCourse.objects.filter(user=request.user)
         return render(request, 'usercenter-mycourse.html', {
             'user_courses': user_courses,
+        })
+
+
+class MyFavOrgView(LoginRequiredMixin, View):
+    """
+    用户收藏的课程机构
+    """
+
+    def get(self, request):
+        org_list = []
+        user_fav_orgs = UserFavorite.objects.filter(user=request.user)
+        for fav_org in user_fav_orgs:
+            org_id = fav_org.fav_id
+            org = CourseOrg.objects.get(id=org_id)
+            org_list.append(org)
+        return render(request, 'usercenter-fav-org.html', {
+            'user_fav_orgs': org_list,
         })
