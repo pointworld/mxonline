@@ -57,6 +57,10 @@ class Course(models.Model):
     teacher = models.ForeignKey(Teacher, verbose_name='teacher', null=True, blank=True, on_delete=models.CASCADE)
     note = models.CharField(max_length=300, verbose_name='notes of course', default='')
     target = models.CharField(max_length=300, verbose_name='targets of course', default='')
+
+    # 是否属于轮播图
+    is_slide = models.BooleanField(default=False, verbose_name='is slide')
+
     add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
 
     class Meta:

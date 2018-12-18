@@ -93,7 +93,7 @@ class EmailAuthCode(models.Model):
         # verbose_name_plural = verbose_name
 
     def __str__(self):
-        return '{0}({1})'.format(self.code,self.email)
+        return '{0}({1})'.format(self.code, self.email)
 
 
 class Slide(models.Model):
@@ -122,3 +122,6 @@ class Slide(models.Model):
     class Meta:
         verbose_name = 'Slide'
         # verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.title

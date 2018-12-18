@@ -10,6 +10,7 @@ from django.contrib.auth.hashers import make_password
 from django.db.models import Q
 from django.views.generic.base import View
 from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 
 from pure_pagination import Paginator, PageNotAnInteger
 
@@ -17,7 +18,7 @@ from courses.models import Course
 from operation.models import UserCourse, UserFavorite, UserMessage
 from organization.models import CourseOrg, Teacher
 from utils.mixin_utils import LoginRequiredMixin
-from .models import UserProfile, EmailAuthCode
+from .models import UserProfile, EmailAuthCode, Slide
 from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm, UserAvatarUploadForm, UserInfoForm
 from utils.email_send import send_register_or_forget_email
 
@@ -28,13 +29,26 @@ Django 的 view 实际就是一个函数，接收 request 请求对象，处理�
 """
 
 
-def index(request):
-    """
-    首页的处理逻辑
-    :param request:
-    :return: response
-    """
-    return render(request, 'index.html', {})
+class IndexView(View):
+    def get(self, request):
+        """
+        首页的处理逻辑
+        :param request:
+        :return: response
+        """
+
+        # 取出轮播图
+        all_slides = Slide.objects.all().order_by('index')
+        courses = Course.objects.filter(is_slide=False)[:6]
+        slide_courses = Course.objects.filter(is_slide=True)[:3]
+        course_orgs = CourseOrg.objects.all()[:15]
+
+        return render(request, 'index.html', {
+            'all_slides': all_slides,
+            'courses': courses,
+            'slide_courses': slide_courses,
+            'course_orgs': course_orgs,
+        })
 
 
 class RegisterView(View):
@@ -120,7 +134,7 @@ class LoginView(View):
                     # 使 request 携带有 user 等信息
                     login(request, user)
                     # 这些信息会被处理成响应，最终返回到浏览器，完成登录
-                    return render(request, 'index.html', {})
+                    return HttpResponseRedirect(reverse('index'))
                 else:
                     return render(request, 'login.html', {'msg': '用户未激活！'})
             # 用户不存在则重新跳转到登录页
