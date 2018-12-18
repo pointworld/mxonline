@@ -54,7 +54,7 @@ class UserProfile(AbstractUser):
         :return:
         """
         from operation.models import UserMessage
-        return UserMessage.objects.filter(receiver=self.id).count()
+        return UserMessage.objects.filter(receiver=self.id, has_read=False).count()
 
     # 重载 __str__ 方法，打印实例时会打印 username，username 继承自 AbstractUser
     def __str__(self):

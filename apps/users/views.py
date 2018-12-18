@@ -405,6 +405,12 @@ class MyMessageView(LoginRequiredMixin, View):
     def get(self, request):
         all_messages = UserMessage.objects.filter(receiver=request.user.id)
 
+        # 用户进入我的消息页面时，清空该用户的未读消息数
+        all_unread_messages = UserMessage.objects.filter(receiver= request.user.id, has_read=False)
+        for unread_message in all_unread_messages:
+            unread_message.has_read = True
+            unread_message.save()
+
         # 分页
         try:
             page = request.GET.get('page', 1)
