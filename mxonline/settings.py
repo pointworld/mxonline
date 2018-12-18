@@ -151,10 +151,10 @@ STATICFILES_DIRS = (
 
 EMAIL_HOST = 'smtp.sina.com'
 EMAIL_PORT = 25
-EMAIL_HOST_USER = 'onerf@sina.com'
-EMAIL_HOST_PASSWORD = 'wrunfa5945528,,.'
+EMAIL_HOST_USER = 'youremail@sina.com'
+EMAIL_HOST_PASSWORD = 'yourauthcode'
 EMAIL_USE_TLS = False
-EMAIL_FROM = 'onerf@sina.com'
+EMAIL_FROM = 'youremail@sina.com'
 
 # 资源文件的相关配置
 

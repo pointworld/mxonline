@@ -34,7 +34,8 @@
                             </dl>
                             <div class="userdetail">
                                 <dl>
-                                    <dt><img width="80" height="80" src="{{ MEDIA_URL }}{{ request.user.avatar }}"/></dt>
+                                    <dt><img width="80" height="80" src="{{ MEDIA_URL }}{{ request.user.avatar }}"/>
+                                    </dt>
                                     <dd>
                                         <h2>{{ request.user.nickname }}</h2>
                                         <p>{{ request.user.username }}</p>
@@ -72,15 +73,15 @@
 </section>
 
 {% block crumbs %}
-<section>
-    <div class="wp">
-        <ul class="crumbs">
-            <li><a href="index.html">首页</a>></li>
-            <li><a href="/user/home/">个人中心</a>></li>
-            <li>个人信息</li>
-        </ul>
-    </div>
-</section>
+    <section>
+        <div class="wp">
+            <ul class="crumbs">
+                <li><a href="index.html">首页</a>></li>
+                <li><a href="/user/home/">个人中心</a>></li>
+                <li>个人信息</li>
+            </ul>
+        </div>
+    </section>
 {% endblock %}
 
 <section>
@@ -98,71 +99,72 @@
             </ul>
         </div>
         {% block right_content %}
-        <div class="right">
-            <div class="personal_des ">
-                <div class="head" style="border:1px solid #eaeaea;">
-                    <h1>个人信息</h1>
-                </div>
-                <div class="inforcon">
-                    <div class="left" style="width:242px;">
-                        <iframe id='frameFile' name='frameFile' style='display: none;'></iframe>
-                        <form class="clearfix" id="jsAvatarForm" enctype="multipart/form-data" autocomplete="off"
-                              method="post" action="/users/image/upload/" target='frameFile'>
-                            <label class="changearea" for="avatarUp">
+            <div class="right">
+                <div class="personal_des ">
+                    <div class="head" style="border:1px solid #eaeaea;">
+                        <h1>个人信息</h1>
+                    </div>
+                    <div class="inforcon">
+                        <div class="left" style="width:242px;">
+                            <iframe id='frameFile' name='frameFile' style='display: none;'></iframe>
+                            <form class="clearfix" id="jsAvatarForm" enctype="multipart/form-data" autocomplete="off"
+                                  method="post" action="/users/image/upload/" target='frameFile'>
+                                <label class="changearea" for="avatarUp">
                             <span id="avatardiv" class="pic">
                                 <img width="100" height="100" class="js-img-show" id="avatarShow"
                                      src="{% static 'media/image/2016/12/default_big_14.png' %}"/>
                             </span>
-                                <span class="fl upload-inp-box" style="margin-left:70px;">
+                                    <span class="fl upload-inp-box" style="margin-left:70px;">
                                 <span class="button btn-green btn-w100" id="jsAvatarBtn">修改头像</span>
                                 <input type="file" name="image" id="avatarUp" class="js-img-up"/>
                             </span>
-                            </label>
-                        </form>
-                        <div style="border-top:1px solid #eaeaea;margin-top:30px;">
-                            <a class="button btn-green btn-w100" id="jsUserResetPwd"
-                               style="margin:80px auto;width:100px;">修改密码</a>
+                                </label>
+                            </form>
+                            <div style="border-top:1px solid #eaeaea;margin-top:30px;">
+                                <a class="button btn-green btn-w100" id="jsUserResetPwd"
+                                   style="margin:80px auto;width:100px;">修改密码</a>
+                            </div>
                         </div>
+                        <form class="perinform" id="jsEditUserForm" autocomplete="off">
+                            <ul class="right">
+                                <li>昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：
+                                    <input type="text" name="nick_name" id="nickname" value="mtianyan" maxlength="10">
+                                    <i class="error-tips"></i>
+                                </li>
+                                <li>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：
+                                    <input type="text" id="birth_day" name="birthday" value="2018年1月8日"
+                                           readonly="readonly"/>
+                                    <i class="error-tips"></i>
+                                </li>
+                                <li>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：
+                                    <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="gender"
+                                                                                value="male">男</label>
+                                    <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="gender"
+                                                                                      value="female"
+                                                                                      checked="checked">女</label>
+                                </li>
+                                <li class="p_infor_city">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：
+                                    <input type="text" name="address" id="address" placeholder="请输入你的地址" value="西安"
+                                           maxlength="11">
+                                    <i class="error-tips"></i>
+                                </li>
+                                <li>手&nbsp;&nbsp;机&nbsp;&nbsp;号：
+                                    <input type="text" name="mobile" id="mobile" placeholder="请输入你的手机号码" value=""
+                                           maxlength="11">
+                                </li>
+                                <li>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：
+                                    <input class="borderno" type="text" name="email" readonly="readonly"
+                                           value="1147727180@qq.com"/>
+                                    <span class="green changeemai_btn">[修改]</span>
+                                </li>
+                                <li class="button heibtn">
+                                    <input type="button" id="jsEditUserBtn" value="保存">
+                                </li>
+                            </ul>
+                        </form>
                     </div>
-                    <form class="perinform" id="jsEditUserForm" autocomplete="off">
-                        <ul class="right">
-                            <li>昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：
-                                <input type="text" name="nick_name" id="nickname" value="mtianyan" maxlength="10">
-                                <i class="error-tips"></i>
-                            </li>
-                            <li>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：
-                                <input type="text" id="birth_day" name="birthday" value="2018年1月8日" readonly="readonly"/>
-                                <i class="error-tips"></i>
-                            </li>
-                            <li>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：
-                                <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="gender"
-                                                                            value="male">男</label>
-                                <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="gender"
-                                                                                  value="female"
-                                                                                  checked="checked">女</label>
-                            </li>
-                            <li class="p_infor_city">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：
-                                <input type="text" name="address" id="address" placeholder="请输入你的地址" value="西安"
-                                       maxlength="11">
-                                <i class="error-tips"></i>
-                            </li>
-                            <li>手&nbsp;&nbsp;机&nbsp;&nbsp;号：
-                                <input type="text" name="mobile" id="mobile" placeholder="请输入你的手机号码" value=""
-                                       maxlength="11">
-                            </li>
-                            <li>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：
-                                <input class="borderno" type="text" name="email" readonly="readonly"
-                                       value="1147727180@qq.com"/>
-                                <span class="green changeemai_btn">[修改]</span>
-                            </li>
-                            <li class="button heibtn">
-                                <input type="button" id="jsEditUserBtn" value="保存">
-                            </li>
-                        </ul>
-                    </form>
                 </div>
             </div>
-        </div>
         {% endblock %}
     </div>
 </section>
@@ -327,7 +329,6 @@
     $('.jsDeleteFav_course').on('click', function () {
         var _this = $(this),
             favid = _this.attr('data-favid');
-        alert(favid)
         $.ajax({
             cache: false,
             type: "POST",
@@ -335,7 +336,7 @@
             data: {
                 fav_type: 1,
                 fav_id: favid,
-                csrfmiddlewaretoken: '799Y6iPeEDNSGvrTu3noBrO4MBLv6enY'
+                csrfmiddlewaretoken: '{{ csrf_token }}'
             },
             async: true,
             success: function (data) {
@@ -354,7 +355,7 @@
             data: {
                 fav_type: 3,
                 fav_id: favid,
-                csrfmiddlewaretoken: '799Y6iPeEDNSGvrTu3noBrO4MBLv6enY'
+                csrfmiddlewaretoken: '{{ csrf_token }}'
             },
             async: true,
             success: function (data) {
@@ -362,7 +363,6 @@
             }
         });
     });
-
 
     $('.jsDeleteFav_org').on('click', function () {
         var _this = $(this),
@@ -374,7 +374,7 @@
             data: {
                 fav_type: 2,
                 fav_id: favid,
-                csrfmiddlewaretoken: '799Y6iPeEDNSGvrTu3noBrO4MBLv6enY'
+                csrfmiddlewaretoken: '{{ csrf_token }}'
             },
             async: true,
             success: function (data) {
