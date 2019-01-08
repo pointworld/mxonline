@@ -14,8 +14,55 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include, re_path
+# Serve static files below a given point in the directory structure
+from django.views.static import serve
+
+from mxonline.settings import MEDIA_ROOT, STATIC_ROOT
+from users.views import IndexView, LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetPwdView, ModifyPwdView, LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # 首页
+    path('', IndexView.as_view(), name='index'),
+    # 登录
+    path('login/', LoginView.as_view(), name='login'),
+    # 退出
+    path('logout/', LogoutView.as_view(), name='logout'),
+    # 注册
+    path('register/', RegisterView.as_view(), name='register'),
+    # 图片验证码
+    path('captcha/', include('captcha.urls')),
+    # 邮箱激活
+    re_path('active/(?P<active_code>.*)/', ActiveUserView.as_view(),
+            name='user_active'),
+    # 忘记密码
+    path('forget/', ForgetPwdView.as_view(), name='forget_psd'),
+    # 密码重置
+    re_path('reset/(?P<active_code>.*)/', ResetPwdView.as_view(),
+            name='reset_pwd'),
+    # 修改密码
+    path('modify_pwd/', ModifyPwdView.as_view(), name='modify_psd'),
+
+    # 课程机构 url 配置
+    path('org/', include('organization.urls', namespace='org')),
+
+    # 课程相关 url 配置
+    path('course/', include('courses.urls', namespace='course')),
+
+    # 用户相关 url 配置
+    path('users/', include('users.urls', namespace='users')),
+
+    # 上传文件的访问处理
+    re_path('media/(?P<path>.*)', serve, {'document_root': MEDIA_ROOT}),
+
+    # 上传文件的访问处理
+    re_path('static/(?P<path>.*)', serve, {'document_root': STATIC_ROOT}),
 ]
+
+# 全局 404 页面配置
+handler404 = 'users.views.page_not_found'
+
+# 全局 500 页面配置
+handler500 = 'users.views.page_error'

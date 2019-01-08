@@ -1,2 +1,4 @@
 mysqlclient
 pillow
+django-simple-captcha
+django-pure-pagination

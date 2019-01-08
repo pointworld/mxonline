@@ -3,6 +3,9 @@ from datetime import datetime
 
 from django.db import models
 
+from organization.models import CourseOrg, Teacher
+
+
 # Create your models here.
 
 class Course(models.Model):
@@ -16,6 +19,14 @@ class Course(models.Model):
         ('adv', 'advanced'),
     )
 
+    # 外键
+    course_org = models.ForeignKey(
+        CourseOrg,
+        verbose_name='course organization',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
     # 课程名
     name = models.CharField(max_length=50, verbose_name='course name')
     # 课程描述
@@ -33,18 +44,48 @@ class Course(models.Model):
     fav_nums = models.IntegerField(default=0, verbose_name='number of favorites')
     # 课程封面
     cover = models.ImageField(
-        max_length='100',
+        max_length=100,
         upload_to='courses/%Y/%m',
         verbose_name='cover'
     )
     # 课程点击数
     hit_nums = models.IntegerField(default=0, verbose_name='number of hits')
+    # 课程类别
+    category = models.CharField(max_length=20, verbose_name='course category', default='backend')
+    tag = models.CharField(default='', verbose_name='course tag', max_length=10)
     # 课程添加时间
+    teacher = models.ForeignKey(Teacher, verbose_name='teacher', null=True, blank=True, on_delete=models.CASCADE)
+    note = models.CharField(max_length=300, verbose_name='notes of course', default='')
+    target = models.CharField(max_length=300, verbose_name='targets of course', default='')
+
+    # 是否属于轮播图
+    is_slide = models.BooleanField(default=False, verbose_name='is slide')
+
     add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
 
     class Meta:
-        verbose_name = 'course'
+        verbose_name = 'Course'
         # verbose_name_plural = verbose_name
+
+    def get_course_lesson(self):
+        """
+        获取课程的所有章节
+        :return:
+        """
+        return self.lesson_set.all()
+
+    def get_lesson_nums(self):
+        """
+        获取课程的章节数
+        :return:
+        """
+        return self.lesson_set.all().count()
+
+    def get_learn_users(self):
+        return self.usercourse_set.all()[:5]
+
+    def __str__(self):
+        return self.name
 
 
 class Lesson(models.Model):
@@ -62,8 +103,18 @@ class Lesson(models.Model):
     add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
 
     class Meta:
-        verbose_name = 'lesson'
+        verbose_name = 'Lesson'
         # verbose_name_plural = verbose_name
+
+    def get_lesson_video(self):
+        """
+        获取章节视频
+        :return:
+        """
+        return self.video_set.all()
+
+    def __str__(self):
+        return self.name
 
 
 class Video(models.Model):
@@ -77,12 +128,17 @@ class Video(models.Model):
     lesson = models.ForeignKey(Lesson, verbose_name='lesson', on_delete=models.CASCADE)
     # 视频名
     name = models.CharField(max_length=100, verbose_name='video name')
+    url = models.CharField(max_length=200, verbose_name='visit address', default='')
+    duration = models.IntegerField(default=0, verbose_name='time (minutes)')
     # 添加时间
     add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
 
     class Meta:
-        verbose_name = 'video'
+        verbose_name = 'Video'
         # verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
 
 
 class CourseResource(models.Model):
@@ -107,5 +163,8 @@ class CourseResource(models.Model):
     add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
 
     class Meta:
-        verbose_name = 'course resource'
+        verbose_name = 'Course Resource'
         # verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
