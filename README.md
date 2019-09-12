@@ -77,7 +77,7 @@ $ python manage.py runserver
 
 ## 参考
 
- - [原版视频课程地址:](https://coding.imooc.com/learn/list/78.html)
+ - [原版视频课程地址](https://coding.imooc.com/learn/list/78.html)
  - [mtianyan](https://github.com/mtianyan/Mxonline3)
 
 ## 有问题，欢迎提 [issue](https://github.com/pointworld/mxonline/issues)
