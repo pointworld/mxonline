@@ -1,127 +1,99 @@
-# _*_ encoding:utf8 _*_
-
 from datetime import datetime
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 
-# Create your models here.
-
-
 class UserProfile(AbstractUser):
-    """
-    自定义 user 表
-    原则：在原有 user 表的基础上新增字段或覆盖某些原有字段
-    """
-
     # 自定义的性别选择规则
     GENDER_CHOICES = (
-        ('male', 'male'),
-        ('female', 'female'),
+        ("male", "男"),
+        ("female", "女")
     )
     # 昵称
-    nickname = models.CharField(max_length=50, verbose_name='nickname', default='')
+    nick_name = models.CharField(max_length=50, verbose_name="昵称", blank=True, default="")
     # 生日，可以为空
-    birthday = models.DateField(verbose_name='birthday', null=True, blank=True)
-    # 性别，只能是男或女，默认男
+    birthday = models.DateField(verbose_name="生日", null=True, blank=True)
+    # 性别 只能男或女，默认女
     gender = models.CharField(
-        max_length=10,
-        verbose_name='gender',
+        max_length=6,
+        verbose_name="性别",
         choices=GENDER_CHOICES,
-        default='female',
-    )
+        default="female")
     # 地址
-    address = models.CharField(max_length=100, verbose_name='address', default='')
+    address = models.CharField(max_length=100, default="", blank=True, verbose_name="地址")
     # 电话
-    mobile = models.CharField(max_length=11, null=True, blank=True)
-    # 头像，默认使用 default.png
-    # ImageField 实际也是 CharField 所以也要有 max_length
-    avatar = models.ImageField(
+    mobile = models.CharField(
+        max_length=11,
+        null=True,
+        blank=True,
+        unique=True,
+        verbose_name="电话")
+    # 头像 默认使用default.png
+    image = models.ImageField(
+        upload_to="image/%Y/%m",
+        default="image/default.png",
         max_length=100,
-        upload_to='image/%Y/%m',
-        default='image/default.png',
+        verbose_name="头像"
     )
 
     # meta 信息，即后台栏目名
     class Meta:
-        verbose_name = 'User Info'
-        # verbose_name_plural = verbose_name
+        verbose_name = "用户信息"
+        verbose_name_plural = verbose_name
 
-    def get_unread_nums(self):
-        """
-        获取用户未读消息的数量
-        :return:
-        """
-        from operation.models import UserMessage
-        return UserMessage.objects.filter(receiver=self.id, has_read=False).count()
-
-    # 重载 __str__ 方法，打印实例时会打印 username，username 继承自 AbstractUser
+    # 重载__str__方法，打印实例会打印username，username为继承自AbstractUser
     def __str__(self):
         return self.username
 
+    # 获取用户未读消息的数量
+    def unread_nums(self):
+        from operation.models import UserMessage
+        return UserMessage.objects.filter(has_read=False, user=self.id).count()
 
-class EmailAuthCode(models.Model):
-    """
-    邮箱验证码
-    放在 users 下，是因为这里的邮箱验证码只和用户有关，且功能比较独立
-    """
+
+class EmailVerifyRecord(models.Model):
+    """邮箱验证码 model"""
 
     SEND_CHOICES = (
-        ('register', 'register'),
-        ('forget', 'retrieve password'),
-        ('update_email', 'update email'),
+        ("register", "注册"),
+        ("forget", "找回密码"),
+        ("update_email", "修改邮箱"),
     )
-    # 验证码
-    code = models.CharField(max_length=20, verbose_name='auth code')
-    # 邮箱
-    email = models.EmailField(max_length=50, verbose_name='email')
-    # 发送类型（注册、找回密码）
+    code = models.CharField(max_length=20, verbose_name="验证码")
+    email = models.EmailField(max_length=50, verbose_name="邮箱")
     send_type = models.CharField(
-        max_length=20,
         choices=SEND_CHOICES,
-        verbose_name='auth code type',
-    )
-    # 发送时间，这里的 now 得去掉 ()，不去掉会根据编译时间。而不是根据实例化时间。
+        max_length=20,
+        verbose_name="验证码类型")
+    # 这里的 now 得去掉(),不去掉会根据编译时间。而不是根据实例化时间。
     send_time = models.DateTimeField(
-        default=datetime.now,
-        verbose_name='send time'
-    )
+        default=datetime.now, verbose_name="发送时间")
 
     class Meta:
-        verbose_name = 'Email Auth Code'
-        # verbose_name_plural = verbose_name
+        verbose_name = "邮箱验证码"
+        verbose_name_plural = verbose_name
 
     def __str__(self):
         return '{0}({1})'.format(self.code, self.email)
 
 
-class Slide(models.Model):
-    """
-    轮播图
-    是一个比较独立的功能，不会和其他 model 产生关系
-    故这里把它放到了 users 中
-    TODO: 是否还有更合适的放置位置
-    """
+class Banner(models.Model):
+    """轮播图 model"""
 
-    # 显示名称
-    title = models.CharField(max_length=100, verbose_name='title')
-    # 图片的路径地址
+    title = models.CharField(max_length=100, verbose_name="标题")
     image = models.ImageField(
-        max_length=100,
-        upload_to='slide/%Y/%m',
-        verbose_name='slide image'
-    )
-    # 幻灯片的跳转
-    url = models.URLField(max_length=200, verbose_name='access url')
-    # 幻灯片索引
-    index = models.IntegerField(default=100, verbose_name='index')
-    # 该记录的生成时间
-    add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
+        upload_to="banner/%Y/%m",
+        verbose_name="轮播图",
+        max_length=100)
+    url = models.URLField(max_length=200, verbose_name="访问地址")
+    # 默认 index 很大靠后。想要靠前修改 index 值
+    index = models.IntegerField(default=100, verbose_name="顺序")
+    add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
 
     class Meta:
-        verbose_name = 'Slide'
-        # verbose_name_plural = verbose_name
+        verbose_name = "轮播图"
+        verbose_name_plural = verbose_name
 
     def __str__(self):
-        return self.title
+        return '{0}(位于第{1}位)'.format(self.title, self.index)

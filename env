@@ -1,0 +1,27 @@
+## 数据库相关配置
+
+# MySQL 数据库
+
+DB_MYSQL_NAME=xxx
+DB_MYSQL_HOST=xxx
+DB_MYSQL_PORT=xxx
+DB_MYSQL_USER=xxx
+DB_MYSQL_PASSWORD=xxx
+
+
+## 邮箱相关配置
+
+# QQ 邮箱
+
+# 发送邮件的邮箱，需要配置开通 SMTP
+EMAIL_HOST_USER=xxx@qq.com
+# 在邮箱中设置的客户端授权密码
+EMAIL_HOST_PASSWORD=xxx
+# 收件人看到的发件人
+EMAIL_FROM = edu.pointborn.com <youremail@qq.com>
+
+
+## Django 密钥
+SECRET_KEY=^$u=oo2&q6l-r0^$fj5rvk^me7cx)83x_8%2d$%k@uyqo31*^5
+
+ALLOWED_HOSTS=

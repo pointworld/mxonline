@@ -1,88 +1,48 @@
-# _*_ coding:utf8 _*_
 from datetime import datetime
 
 from django.db import models
 
+from DjangoUeditor.models import UEditorField
 from organization.models import CourseOrg, Teacher
 
 
-# Create your models here.
-
 class Course(models.Model):
-    """
-    课程基本信息
-    """
+    """课程信息表"""
 
     DEGREE_CHOICES = (
-        ('ele', 'elementary'),
-        ('int', 'intermediate'),
-        ('adv', 'advanced'),
+        ("cj", "初级"),
+        ("zj", "中级"),
+        ("gj", "高级")
     )
-
-    # 外键
-    course_org = models.ForeignKey(
-        CourseOrg,
-        verbose_name='course organization',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-    )
-    # 课程名
-    name = models.CharField(max_length=50, verbose_name='course name')
-    # 课程描述
-    desc = models.CharField(max_length=200, verbose_name='course description')
-    # 课程详细信息
-    # TextField 允许不输入长度。可以输入到无限大。暂时定义为 TextFiled，之后更新为富文本
-    detail = models.TextField(verbose_name='course detail')
-    # 课程难度
-    degree = models.CharField(max_length=3, choices=DEGREE_CHOICES)
-    # 课程总时长
-    duration = models.IntegerField(default=0, verbose_name='learning time (minutes)')
-    # 学习人数
-    student_nums = models.IntegerField(default=0, verbose_name='number of students')
-    # 收藏人数
-    fav_nums = models.IntegerField(default=0, verbose_name='number of favorites')
-    # 课程封面
-    cover = models.ImageField(
-        max_length=100,
-        upload_to='courses/%Y/%m',
-        verbose_name='cover'
-    )
-    # 课程点击数
-    hit_nums = models.IntegerField(default=0, verbose_name='number of hits')
-    # 课程类别
-    category = models.CharField(max_length=20, verbose_name='course category', default='backend')
-    tag = models.CharField(default='', verbose_name='course tag', max_length=10)
-    # 课程添加时间
-    teacher = models.ForeignKey(Teacher, verbose_name='teacher', null=True, blank=True, on_delete=models.CASCADE)
-    note = models.CharField(max_length=300, verbose_name='notes of course', default='')
-    target = models.CharField(max_length=300, verbose_name='targets of course', default='')
-
-    # 是否属于轮播图
-    is_slide = models.BooleanField(default=False, verbose_name='is slide')
-
-    add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
+    course_org = models.ForeignKey(CourseOrg, on_delete=models.CASCADE, verbose_name="所属机构", null=True, blank=True)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, verbose_name="讲师", null=True, blank=True)
+    name = models.CharField(max_length=50, verbose_name="课程名")
+    desc = models.CharField(max_length=300, verbose_name="课程描述")
+    # 修改imagepath,不能传 y m 进来，不能加斜杠是一个相对路径，相对于 setting 中配置的 media root
+    detail = UEditorField(verbose_name="课程详情", width=600, height=300, imagePath="courses/ueditor/",
+                          filePath="courses/ueditor/", default='')
+    is_banner = models.BooleanField(default=False, verbose_name="是否轮播")
+    degree = models.CharField(choices=DEGREE_CHOICES, max_length=2, verbose_name="难度")
+    # 使用分钟做后台记录(存储最小单位)前台转换
+    learn_times = models.IntegerField(default=0, verbose_name="学习时长(分钟数)")
+    # 保存学习人数:点击开始学习才算
+    students = models.IntegerField(default=0, verbose_name="学习人数")
+    fav_nums = models.IntegerField(default=0, verbose_name="收藏人数")
+    you_need_know = models.CharField(max_length=300, default="一颗勤学的心是本课程必要前提", verbose_name="课程须知")
+    teacher_tell = models.CharField(max_length=300, default="什么都可以学到,按时交作业,不然叫家长", verbose_name="老师告诉你")
+    image = models.ImageField(
+        upload_to="courses/%Y/%m",
+        verbose_name="封面图",
+        max_length=100)
+    # 保存点击量，点进页面就算
+    click_nums = models.IntegerField(default=0, verbose_name="点击数")
+    category = models.CharField(max_length=20, verbose_name="课程类别", default="后端开发")
+    tag = models.CharField(max_length=15, verbose_name="课程标签", default="")
+    add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
 
     class Meta:
-        verbose_name = 'Course'
-        # verbose_name_plural = verbose_name
-
-    def get_course_lesson(self):
-        """
-        获取课程的所有章节
-        :return:
-        """
-        return self.lesson_set.all()
-
-    def get_lesson_nums(self):
-        """
-        获取课程的章节数
-        :return:
-        """
-        return self.lesson_set.all().count()
-
-    def get_learn_users(self):
-        return self.usercourse_set.all()[:5]
+        verbose_name = "课程"
+        verbose_name_plural = verbose_name
 
     def __str__(self):
         return self.name
@@ -90,81 +50,61 @@ class Course(models.Model):
 
 class Lesson(models.Model):
     """
-    章节相关信息
+    章节模型
+    一个课程对应很多章节
     """
 
-    # 外键：课程
-    # 一个课程对应很多章节。所以在章节表中将课程设置为外键
-    # 作为一个字段来让我们可以知道这个章节对应那个课程
-    course = models.ForeignKey(Course, verbose_name='course', on_delete=models.CASCADE)
-    # 章节名
-    name = models.CharField(max_length=100, verbose_name='lesson name')
-    # 添加时间
-    add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="课程")
+    name = models.CharField(max_length=100, verbose_name="章节名")
+    add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
 
     class Meta:
-        verbose_name = 'Lesson'
-        # verbose_name_plural = verbose_name
-
-    def get_lesson_video(self):
-        """
-        获取章节视频
-        :return:
-        """
-        return self.video_set.all()
+        verbose_name = "章节"
+        verbose_name_plural = verbose_name
 
     def __str__(self):
-        return self.name
+        return '《{0}》课程的章节 >> {1}'.format(self.course, self.name)
 
 
 class Video(models.Model):
     """
-    视频相关信息
+    每章视频
+    一个章节对应很多视频
     """
 
-    # 外键：章节
-    # 因为一个章节对应很多视频。所以在视频表中将章节设置为外键
-    # 作为一个字段来存储让我们可以知道这个视频对应哪个章节
-    lesson = models.ForeignKey(Lesson, verbose_name='lesson', on_delete=models.CASCADE)
-    # 视频名
-    name = models.CharField(max_length=100, verbose_name='video name')
-    url = models.CharField(max_length=200, verbose_name='visit address', default='')
-    duration = models.IntegerField(default=0, verbose_name='time (minutes)')
-    # 添加时间
-    add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name="章节")
+    url = models.CharField(max_length=200, default="http://blog.pointborn.com/", verbose_name="访问地址")
+    name = models.CharField(max_length=100, verbose_name="视频名")
+    # 使用分钟做后台记录(存储最小单位)前台转换
+    learn_times = models.IntegerField(default=0, verbose_name="学习时长(分钟数)")
+    add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
 
     class Meta:
-        verbose_name = 'Video'
-        # verbose_name_plural = verbose_name
+        verbose_name = u"视频"
+        verbose_name_plural = verbose_name
 
     def __str__(self):
-        return self.name
+        return '{0}章节的视频 >> {1}'.format(self.lesson, self.name)
 
 
 class CourseResource(models.Model):
     """
-    课程资源相关信息
+    课程资源
+    一个课程对应很多资源
     """
 
-    # 外键：课程
-    # 因为一个课程对应很多资源。所以在课程资源表中将课程设置为外键
-    # 作为一个字段来让我们可以知道这个资源对应那个课程
-    course = models.ForeignKey(Course, verbose_name='course', on_delete=models.CASCADE)
-    # 资源名
-    name = models.CharField(max_length=100, verbose_name='resource name')
-    # 这里定义成文件类型的字段，后台管理系统中会直接生成上传的按钮
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="课程")
+    name = models.CharField(max_length=100, verbose_name="名称")
     # FileField 也是一个字符串类型，要指定最大长度
     download = models.FileField(
-        max_length=100,
-        upload_to='course/resource/%Y/%m',
-        verbose_name='file resource'
-    )
-    # 添加时间
-    add_time = models.DateTimeField(default=datetime.now, verbose_name='add time')
+        upload_to="course/resource/%Y/%m",
+        verbose_name="资源文件",
+        max_length=100)
+    add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
 
     class Meta:
-        verbose_name = 'Course Resource'
-        # verbose_name_plural = verbose_name
+        verbose_name = "课程资源"
+        verbose_name_plural = verbose_name
 
     def __str__(self):
-        return self.name
+        return '《{0}》课程的资源: {1}'.format(self.course, self.name)
