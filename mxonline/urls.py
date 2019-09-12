@@ -1,68 +1,58 @@
-"""mxonline URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include, re_path
-# Serve static files below a given point in the directory structure
-from django.views.static import serve
+from django.conf import settings
+from django.conf.urls.static import static
 
-from mxonline.settings import MEDIA_ROOT, STATIC_ROOT
-from users.views import IndexView, LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetPwdView, ModifyPwdView, LogoutView
+import xadmin
+
+from users import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    # 自定义 admin 的后台
+    path('xadmin/', xadmin.site.urls),
+
     # 首页
-    path('', IndexView.as_view(), name='index'),
+    path('', views.IndexView.as_view(), name="index"),
+
     # 登录
-    path('login/', LoginView.as_view(), name='login'),
+    path('login/', views.LoginView.as_view(), name="login"),
+
     # 退出
-    path('logout/', LogoutView.as_view(), name='logout'),
+    path('logout/', views.LogoutView.as_view(), name="logout"),
+
     # 注册
-    path('register/', RegisterView.as_view(), name='register'),
-    # 图片验证码
-    path('captcha/', include('captcha.urls')),
-    # 邮箱激活
-    re_path('active/(?P<active_code>.*)/', ActiveUserView.as_view(),
-            name='user_active'),
+    path("register/", views.RegisterView.as_view(), name="register"),
+
+    # 验证码
+    path("captcha/", include('captcha.urls')),
+
+    # 激活用户
+    re_path('active/(?P<active_code>.*)/', views.ActiveUserView.as_view(), name="user_active"),
+
     # 忘记密码
-    path('forget/', ForgetPwdView.as_view(), name='forget_psd'),
-    # 密码重置
-    re_path('reset/(?P<active_code>.*)/', ResetPwdView.as_view(),
-            name='reset_pwd'),
-    # 修改密码
-    path('modify_pwd/', ModifyPwdView.as_view(), name='modify_psd'),
+    path('forget/', views.ForgetPwdView.as_view(), name="forget_pwd"),
 
-    # 课程机构 url 配置
-    path('org/', include('organization.urls', namespace='org')),
+    # 重置密码：用来接收来自邮箱的重置链接
+    re_path('reset/(?P<active_code>.*)/', views.ResetView.as_view(), name="reset_pwd"),
 
-    # 课程相关 url 配置
-    path('course/', include('courses.urls', namespace='course')),
+    # 修改密码：用于password reset 页面提交表单
+    path('modify_pwd/', views.ModifyPwdView.as_view(), name="modify_pwd"),
 
-    # 用户相关 url 配置
-    path('users/', include('users.urls', namespace='users')),
+    # 课程机构和讲师 app 的 url 配置
+    path("org/", include('organization.urls', namespace='org')),
 
-    # 上传文件的访问处理
-    re_path('media/(?P<path>.*)', serve, {'document_root': MEDIA_ROOT}),
+    # 课程 app 的 url 配置
+    path("course/", include('courses.urls')),
 
-    # 上传文件的访问处理
-    re_path('static/(?P<path>.*)', serve, {'document_root': STATIC_ROOT}),
-]
+    # user app 的 url 配置
+    path("users/", include('users.urls', namespace="users")),
 
-# 全局 404 页面配置
-handler404 = 'users.views.page_not_found'
+    # 富文本相关
+    path('ueditor/', include('DjangoUeditor.urls')),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-# 全局 500 页面配置
-handler500 = 'users.views.page_error'
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
