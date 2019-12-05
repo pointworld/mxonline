@@ -4,7 +4,7 @@ billiard==3.6.1.0
 celery==4.3.0
 defusedxml==0.6.0
 diff-match-patch==20181111
-Django==2.2.2
+Django==2.2.8
 django-crispy-forms==1.7.2
 django-formtools==2.1
 django-import-export==1.2.0
